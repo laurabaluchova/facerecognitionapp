@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import './App.css';
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';

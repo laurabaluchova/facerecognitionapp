@@ -1,40 +1,41 @@
-import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { useState } from 'react';
 
-class  SignIn extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signInEmail: '',
-      signInPassword: ''
-    }
+function  SignIn ({loadUser, onRouteChange}) {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     signInEmail: '',
+  //     signInPassword: ''
+  //   }
+  // }
+
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+
+  const onEmailChange = (event) => {
+    setSignInEmail(event.target.value)
   }
-  onEmailChange = (event) => {
-    this.setState({signInEmail: event.target.value})
-  }
-  onPasswordChange = (event) => {
-    this.setState({signInPassword: event.target.value})
+  const onPasswordChange = (event) => {
+    setSignInPassword(event.target.value)
   }
 
-onSubmitSignIn = (event) => {
+const onSubmitSignIn = (event) => {
   fetch('https://ai-brain-server.onrender.com/signin', {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      email: this.state.signInEmail,
-      password: this.state.signInPassword
+      email: signInEmail,
+      password: signInPassword
     })
   })
     .then(response => response.json())
     .then(user => {
       if (user.id) {
-        this.props.loadUser(user);
-        this.props.onRouteChange('home');
+        loadUser(user);
+        onRouteChange('home');
     }
   })  
 }
-  render() {
-    const { onRouteChange } = this.props;
   return (    
     <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
     <main className="pa4 white">
@@ -43,7 +44,7 @@ onSubmitSignIn = (event) => {
                 <legend className="f1 fw6 ph0 mh0">Sign In</legend>
                 <div className="mt3">
                     <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                    <input onChange={this.onEmailChange}
+                    <input onChange={onEmailChange}
                     className="pa2 input-reset ba bg-transparent white hover-bg-white hover-black w-100" 
                     type="email" 
                     name="email-address" 
@@ -51,7 +52,7 @@ onSubmitSignIn = (event) => {
                 </div>
       <div className="mv3">
         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-        <input onChange={this.onPasswordChange} 
+        <input onChange={onPasswordChange} 
         className="b pa2 input-reset white ba bg-transparent hover-bg-white hover-black w-100" 
         type="password" 
         name="password"  
@@ -59,7 +60,7 @@ onSubmitSignIn = (event) => {
       </div>      
     </fieldset>
     <div className="">
-      <input onClick={this.onSubmitSignIn}
+      <input onClick={onSubmitSignIn}
       className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white" type="submit" value="Sign in" />
     </div>
     <div className="lh-copy mt3">
@@ -69,5 +70,5 @@ onSubmitSignIn = (event) => {
 </main>
 </ article>        
   );
-  }}
+  }
 export default SignIn;

@@ -1,45 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class  Register extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      name: ''
-    }
+function Register({loadUser, onRouteChange}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+
+  const onEmailChange = (event) => {
+    setEmail(event.target.value)
   }
-  onEmailChange = (event) => {
-    this.setState({email: event.target.value})
+  const onPasswordChange = (event) => {
+    setPassword(event.target.value)
   }
-  onPasswordChange = (event) => {
-    this.setState({password: event.target.value})
-  }
-  onNameChange = (event) => {
-    this.setState({name: event.target.value})
+  const onNameChange = (event) => {
+    setName(event.target.value)
   }
 
-  onSubmitRegister = (event) => {
+  const onSubmitRegister = (event) => {
     fetch('https://ai-brain-server.onrender.com/register', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-        name: this.state.name,
+        email: email,
+        password: password,
+        name: name,
       })
     })
       .then(response => response.json())
       .then(user => {
         if (user.id) {
-          this.props.loadUser(user)
-        this.props.onRouteChange('home');
+          loadUser(user)
+          onRouteChange('home');
       }
     })  
-  }
-
-  render() { 
-    const { onRouteChange } = this.props;   
+  }      
     return (    
       <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
       <main className="pa4 white">
@@ -49,7 +42,7 @@ class  Register extends React.Component {
                   <div className="mt3">
                       <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                       <input 
-                      onChange={this.onNameChange}
+                      onChange={onNameChange}
                       className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
                       type="text" 
                       name="name"  
@@ -58,7 +51,7 @@ class  Register extends React.Component {
                   <div className="mt3">
                       <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                       <input 
-                      onChange={this.onEmailChange}
+                      onChange={onEmailChange}
                       className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
                       type="email" 
                       name="email-address"  
@@ -67,7 +60,7 @@ class  Register extends React.Component {
         <div className="mv3">
           <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
           <input 
-          onChange={this.onPasswordChange}
+          onChange={onPasswordChange}
           className="b pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
           type="password" 
           name="password"  
@@ -75,7 +68,7 @@ class  Register extends React.Component {
         </div>      
       </fieldset>
       <div className="">
-        <input onClick={this.onSubmitRegister}
+        <input onClick={onSubmitRegister}
         className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white" type="submit" value="Register" />
       </div>    
     </div>
@@ -83,6 +76,5 @@ class  Register extends React.Component {
   </ article>        
     )
   }  
-}
 
 export default Register;

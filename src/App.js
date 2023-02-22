@@ -55,6 +55,7 @@ function App() {
 
     const onSubmit = () => {
       setImageUrl(input);
+      console.log(input)
       fetch('https://ai-brain-server.onrender.com/imageurl', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},

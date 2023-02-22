@@ -3,8 +3,8 @@ import React from 'react';
 const  Rank = ({ name, entries }) => {
   return (
     <div>
-        <div className='white f2'>
-          {`${name}, your current entry count is...`}
+        <div className='white f2 pa1'>
+          {`${name}, your current detected images count is...`}
         </div>
         <div className='f1'>
             {entries}

@@ -32,30 +32,40 @@ function App() {
       })
     }
 
-    const calculateFaceLocation = (data) => {      
-      const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+      const calculateFaceLocation = (locationsArray) => {          
       const image = document.getElementById('inputimage');
       const width = Number(image.width);
       const height = Number(image.height);
-      return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - (clarifaiFace.right_col * width),
-        bottomRow: height - (clarifaiFace.bottom_row * height)
-      }
+      let box = [];
+      locationsArray.forEach((item) => {
+        box.push({
+          leftCol: item.left_col * width,
+          topRow: item.top_row * height,
+          rightCol: width - (item.right_col * width),
+          bottomRow: height - (item.bottom_row * height)
+        })
+      })  
+      return box;    
+    };
+
+    const prepareLocationsArray = (data) => {
+      let locationsArray = [];
+      data.forEach((item) => {
+        locationsArray.push(item.region_info.bounding_box)
+        return locationsArray
+      })
     };
 
     const displayFaceBox = (box) => {
       setBox(box);
-    }
+    };
 
     const onInputChange = (event) => {
       setInput(event.target.value);
     };
 
     const onSubmit = () => {
-      setImageUrl(input);
-      console.log(input)
+      setImageUrl(input);      
       fetch('https://ai-brain-server.onrender.com/imageurl', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -63,7 +73,7 @@ function App() {
           input: input
         })
       })
-      .then(response => response.json())
+      .then(response => response.json())            
       .then(response => {
         if (response) {
           fetch('https://ai-brain-server.onrender.com/image', {
@@ -80,7 +90,7 @@ function App() {
             .catch(console.log)
 
         }
-        displayFaceBox( calculateFaceLocation(response))
+        displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)))
       })
       .catch(err => console.log(err));
   }
@@ -96,7 +106,7 @@ function App() {
 
     return (
       <div className="App">
-        <ParticlesBg num={180} type="cobweb" bg={true} color="#CDD9EB" />
+        <ParticlesBg type="cobweb" bg={true} color="#FFFFFF" />
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
         { route === 'home' 
         ? <div>            

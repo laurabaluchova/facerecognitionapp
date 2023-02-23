@@ -18,7 +18,7 @@ function App() {
   } );
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const[box, setBox] = useState({});
+  const[box, setBox] = useState([]);
   const [isSignedIn, setIsSignIn] = useState(false);
   const [route, setRoute] = useState('signin')
     
@@ -44,16 +44,19 @@ function App() {
           rightCol: width - (item.right_col * width),
           bottomRow: height - (item.bottom_row * height)
         })
-      })  
-      return box;    
+      })       
+      return box;   
     };
 
     const prepareLocationsArray = (data) => {
       let locationsArray = [];
-      data.forEach((item) => {
-        locationsArray.push(item.region_info.bounding_box)
-        return locationsArray
-      })
+      let cleaned_data = data.outputs[0].data
+      console.log(cleaned_data)
+       cleaned_data.regions.forEach((item) => {
+        locationsArray.push(item.region_info.bounding_box)       
+      }) 
+      console.log(locationsArray)
+      return locationsArray      
     };
 
     const displayFaceBox = (box) => {
@@ -73,7 +76,7 @@ function App() {
           input: input
         })
       })
-      .then(response => response.json())            
+      .then(response => response.json())                
       .then(response => {
         if (response) {
           fetch('https://ai-brain-server.onrender.com/image', {

@@ -1,6 +1,6 @@
 .bounding_box {
     position:absolute;
-    box-shadow: 0 0 0 3px rgb(56, 56, 240) inset;
+    box-shadow: 0 0 0 3px #E36628 inset;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;    

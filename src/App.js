@@ -36,10 +36,18 @@ function App() {
       })
     }
 
-    const changeModule = (newModule) => {      
-      setModule({...module, [module.id]: newModule})
+    const changeModule = (newModule) => {     
       if (newModule != "face-detection") {
+        setModule({
+          id: "color-recognition",
+          name: "colors"
+        })
         setBox([])
+      } else {
+        setModule({
+          id: "face-detection",
+          name: 'faces'
+        })
       }
       console.log(module)
       }        
@@ -100,13 +108,20 @@ function App() {
             })
           })
             .then(response => response.json())
-            .then(count => {              
-              setUser({...user, [user.entries]: count});
+            .then(count => {               
+              setUser({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                entries: count,
+                joined: user.joined
+
+              });
             })
             .catch(console.log)
 
         }
-        if (module === "face-detection") {
+        if (module.id === "face-detection") {
           displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
           ))} else {
             console.log("cudne",response)
@@ -133,7 +148,7 @@ function App() {
         ? <div>            
             <Rank name={user.name} entries={user.entries}/>
             <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module}/>
-            <FaceRecognition box={box} imageUrl={imageUrl}/>
+            <FaceRecognition box={box} imageUrl={imageUrl} module={module}/>
         </div>
         : (
           route === "signin"

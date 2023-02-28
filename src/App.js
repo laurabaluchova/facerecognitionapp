@@ -25,6 +25,7 @@ function App() {
     id: 'color-recognition',
     name: 'colors'
   });
+  const [imageColors, setImageColors] = useState("")
     
     const loadUser = (data) => {
       setUser({
@@ -83,6 +84,22 @@ function App() {
       setBox(box);
     };
 
+    const prepareColorsArray = (data) => {
+      let colorsArray = [];
+      let cleaned_data = data.outputs[0].data
+      console.log(cleaned_data)
+       cleaned_data.colors.forEach((item) => {
+        colorsArray.push(item.raw_hex)       
+      }) 
+      console.log("col array", colorsArray)
+      return colorsArray      
+    };
+
+    const displayColorSwatch = (colorSwatch) => {
+      console.log(colorSwatch[0])
+      setImageColors(colorSwatch[0])
+    }
+
     const onInputChange = (event) => {
       setInput(event.target.value);
     };
@@ -124,6 +141,7 @@ function App() {
         if (module.id === "face-detection") {
           displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
           ))} else {
+            displayColorSwatch(prepareColorsArray(response))
             console.log("cudne",response)
           }
 
@@ -148,7 +166,7 @@ function App() {
         ? <div>            
             <Rank name={user.name} entries={user.entries}/>
             <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module}/>
-            <FaceRecognition box={box} imageUrl={imageUrl} module={module}/>
+            <FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}/>
         </div>
         : (
           route === "signin"

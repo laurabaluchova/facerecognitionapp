@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';
@@ -20,7 +20,12 @@ function App() {
   const [imageUrl, setImageUrl] = useState('');
   const[box, setBox] = useState([]);
   const [isSignedIn, setIsSignIn] = useState(false);
-  const [route, setRoute] = useState('signin')
+  const [route, setRoute] = useState('signin');
+  const [module, setModule] = useState({
+    id: 'color-recognition',
+    name: 'colors'
+  });
+  const [imageColors, setImageColors] = useState("")
     
     const loadUser = (data) => {
       setUser({
@@ -31,6 +36,22 @@ function App() {
         joined: data.joined
       })
     }
+
+    const changeModule = (newModule) => {     
+      if (newModule != "face-detection") {
+        setModule({
+          id: "color-recognition",
+          name: "colors"
+        })
+        setBox([])
+      } else {
+        setModule({
+          id: "face-detection",
+          name: 'faces'
+        })
+      }
+      console.log(module)
+      }        
 
       const calculateFaceLocation = (locationsArray) => {          
       const image = document.getElementById('inputimage');
@@ -55,13 +76,29 @@ function App() {
        cleaned_data.regions.forEach((item) => {
         locationsArray.push(item.region_info.bounding_box)       
       }) 
-      console.log(locationsArray)
+      console.log("loc array", locationsArray)
       return locationsArray      
     };
 
     const displayFaceBox = (box) => {
       setBox(box);
     };
+
+    const prepareColorsArray = (data) => {
+      let colorsArray = [];
+      let cleaned_data = data.outputs[0].data
+      console.log(cleaned_data)
+       cleaned_data.colors.forEach((item) => {
+        colorsArray.push(item.raw_hex)       
+      }) 
+      console.log("col array", colorsArray)
+      return colorsArray      
+    };
+
+    const displayColorSwatch = (colorSwatch) => {
+      console.log(colorSwatch[0])
+      setImageColors(colorSwatch[0])
+    }
 
     const onInputChange = (event) => {
       setInput(event.target.value);
@@ -73,7 +110,8 @@ function App() {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          input: input
+          input: input,
+          module: module
         })
       })
       .then(response => response.json())                
@@ -87,13 +125,26 @@ function App() {
             })
           })
             .then(response => response.json())
-            .then(count => {              
-              setUser({...user, [user.entries]: count});
+            .then(count => {               
+              setUser({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                entries: count,
+                joined: user.joined
+
+              });
             })
             .catch(console.log)
 
         }
-        displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)))
+        if (module.id === "face-detection") {
+          displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
+          ))} else {
+            displayColorSwatch(prepareColorsArray(response))
+            console.log("cudne",response)
+          }
+
       })
       .catch(err => console.log(err));
   }
@@ -110,12 +161,12 @@ function App() {
     return (
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} color="#FFFFFF" />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
         { route === 'home' 
         ? <div>            
             <Rank name={user.name} entries={user.entries}/>
-            <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-            <FaceRecognition box={box} imageUrl={imageUrl}/>
+            <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module}/>
+            <FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}/>
         </div>
         : (
           route === "signin"

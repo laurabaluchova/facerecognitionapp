@@ -5,9 +5,9 @@ import ColorSwatch from '../ColorSwatch/ColorSwatch';
 const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {
   return (
     <div className='center ma '>
-        <div className='absolute mt4'>  
+    <div className='absolute mt4'>          
 
-    <ColorSwatch imageColor={imageColors}/>
+    <ColorSwatch imageColor={imageColors}/> 
     
     <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>
      {

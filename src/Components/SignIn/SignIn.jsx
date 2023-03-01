@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function  SignIn ({loadUser, onRouteChange}) {
+function  SignIn ({loadUser, onRouteChange, serverUrl}) {
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -20,7 +20,7 @@ function  SignIn ({loadUser, onRouteChange}) {
   }
 
 const onSubmitSignIn = (event) => {
-  fetch('https://ai-brain-server.onrender.com/signin', {
+  fetch(`${serverUrl}/signin`, {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({

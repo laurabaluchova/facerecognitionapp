@@ -2,12 +2,14 @@ import React from 'react';
 import './FaceRecognition.css';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
 
-const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {
+const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {    
   return (
     <div className='center ma '>
-        <div className='absolute mt4'>  
+    <div className='absolute mt4'>          
 
-    <ColorSwatch imageColor={imageColors}/>
+    {module.id === "color-recognition"
+    ? <ColorSwatch imageColor={imageColors} module={module}/>   
+    : console.log("kekeke")}  
     
     <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>
      {

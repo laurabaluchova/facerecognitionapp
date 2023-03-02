@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Register({loadUser, onRouteChange}) {
+function Register({loadUser, onRouteChange, serverUrl}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -16,7 +16,7 @@ function Register({loadUser, onRouteChange}) {
   }
 
   const onSubmitRegister = (event) => {
-    fetch('https://ai-brain-server.onrender.com/register', {
+    fetch(`${serverUrl}/register`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

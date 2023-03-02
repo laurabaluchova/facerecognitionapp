@@ -26,6 +26,8 @@ function App() {
     name: 'colors'
   });
   const [imageColors, setImageColors] = useState("")
+
+  const serverUrl = "https://ai-brain-server.onrender.com"
     
     const loadUser = (data) => {
       setUser({
@@ -89,15 +91,17 @@ function App() {
       let cleaned_data = data.outputs[0].data
       console.log(cleaned_data)
        cleaned_data.colors.forEach((item) => {
-        colorsArray.push(item.raw_hex)       
-      }) 
-      console.log("col array", colorsArray)
-      return colorsArray      
+        colorsArray.push(item)       
+      })
+      console.log("col array", colorsArray) 
+      let sortedColorsArray = colorsArray.sort((a, b) => b.value - a.value)
+      console.log("sorted col array", sortedColorsArray)
+      return sortedColorsArray      
     };
 
     const displayColorSwatch = (colorSwatch) => {
-      console.log(colorSwatch[0])
-      setImageColors(colorSwatch[0])
+      console.log(colorSwatch[0].raw_hex)
+      setImageColors(colorSwatch[0].raw_hex)
     }
 
     const onInputChange = (event) => {
@@ -106,7 +110,7 @@ function App() {
 
     const onSubmit = () => {
       setImageUrl(input);      
-      fetch('https://ai-brain-server.onrender.com/imageurl', {
+      fetch(`${serverUrl}/imageurl`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -117,7 +121,7 @@ function App() {
       .then(response => response.json())                
       .then(response => {
         if (response) {
-          fetch('https://ai-brain-server.onrender.com/image', {
+          fetch(`${serverUrl}/image`, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -170,8 +174,8 @@ function App() {
         </div>
         : (
           route === "signin"
-          ? <SignIn loadUser={loadUser} onRouteChange={onRouteChange}/> 
-          : <Register loadUser={loadUser} onRouteChange={onRouteChange}/> 
+          ? <SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
+          : <Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
         )
         
         }

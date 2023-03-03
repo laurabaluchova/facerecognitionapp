@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 function  SignIn ({loadUser, onRouteChange, serverUrl}) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     signInEmail: '',
-  //     signInPassword: ''
-  //   }
-  // }
-
+  
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+
+  const navigate = useNavigate()
 
   const onEmailChange = (event) => {
     setSignInEmail(event.target.value)
@@ -33,6 +29,7 @@ const onSubmitSignIn = (event) => {
       if (user.id) {
         loadUser(user);
         onRouteChange('home');
+        navigate("/colorrecognition")
     }
   })  
 }

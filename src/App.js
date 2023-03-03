@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Routes, Route } from "react-router-dom";
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';
 import Register from './Components/Register/Register';
 import ImageLinkForm from './Components/ImageLInkForm/ImageLinkForm';
 import Rank from './Components/Rank/Rank';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 import ParticlesBg from 'particles-bg';
 
 function App() {
@@ -166,6 +168,15 @@ function App() {
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} color="#FFFFFF" />
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
+        <Routes>
+              <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
+              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
+              <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
+              <Route path="/colorrecognition" element={<ColorRecognition />} />
+              <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}/>} />            
+          </Routes>
+
+        {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
         { route === 'home' 
         ? <div>            
             <Rank name={user.name} entries={user.entries}/>
@@ -178,8 +189,10 @@ function App() {
           : <Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
         )
         
-        }
-      </div>
-    )};
+        } */}
+      </div>       
+      );
+    }
+    ;
 
     export default App;

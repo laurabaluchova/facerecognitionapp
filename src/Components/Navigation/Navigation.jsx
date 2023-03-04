@@ -11,7 +11,7 @@ export default function  Navigation ( {onRouteChange, isSignedIn, changeModule})
                     <NavLink to="/facerecognition" onClick={() => changeModule('face-detection')} className='f3 link b dim pa2 pr4 pointer white pa2'>Face Recognition</NavLink>
                     <NavLink to="/colorrecognition" onClick={() => changeModule('color-recognition')} className='f3 link dim b pa2 pointer white pa2'>Color Recognition</NavLink>
                 </ul>  
-                <p onClick={() => onRouteChange('signout')} className='f3 link dim underline pa2 pointer white'>Sign Out</p>
+                <NavLink to="/signin" onClick={() => onRouteChange('signout')} className='f3 link dim underline pa2 pointer white'>Sign Out</NavLink>
             </nav>
         );
     } else {

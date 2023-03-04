@@ -9,6 +9,7 @@ import Rank from './Components/Rank/Rank';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 import ParticlesBg from 'particles-bg';
+import ColorSwatch from './Components/ColorSwatch/ColorSwatch';
 
 function App() {
     const [user, setUser] = useState({
@@ -27,10 +28,13 @@ function App() {
     id: 'color-recognition',
     name: 'colors'
   });
-  const [imageColors, setImageColors] = useState("")
+  const [imageColors, setImageColors] = useState("") 
 
   const serverUrl = "https://ai-brain-server.onrender.com"
-    
+  const isColorMode = (module) => {
+    return module.id === "color-recognition"
+  }
+   
     const loadUser = (data) => {
       setUser({
         id: data.id,
@@ -104,9 +108,10 @@ function App() {
     const displayColorSwatch = (colorSwatch) => {
       console.log(colorSwatch[0].raw_hex)
       setImageColors(colorSwatch[0].raw_hex)
+      return imageColors      
     }
 
-    const onInputChange = (event) => {
+   const onInputChange = (event) => {
       setInput(event.target.value);
     };
 
@@ -147,8 +152,8 @@ function App() {
         if (module.id === "face-detection") {
           displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
           ))} else {
-            displayColorSwatch(prepareColorsArray(response))
-            console.log("cudne",response)
+            displayColorSwatch(prepareColorsArray(response))      
+            console.log("cudne", response)            
           }
 
       })
@@ -165,15 +170,17 @@ function App() {
       }
 
     return (
-      <div className="App">
-        <ParticlesBg type="cobweb" bg={true} color="#FFFFFF" />
+      <div className="App" >
+        <ParticlesBg type="cobweb" bg={true} color="#7c25cd" />
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
               <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
-              <Route path="/colorrecognition" element={<ColorRecognition />} />
-              <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}/>} />            
+              <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit}/>} />
+              <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors} 
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} />}/>            
           </Routes>
 
         {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>

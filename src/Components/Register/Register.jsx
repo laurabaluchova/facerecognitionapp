@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 function Register({loadUser, onRouteChange, serverUrl}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+
+  const navigate = useNavigate()
 
   const onEmailChange = (event) => {
     setEmail(event.target.value)
@@ -29,7 +32,8 @@ function Register({loadUser, onRouteChange, serverUrl}) {
       .then(user => {
         if (user.id) {
           loadUser(user)
-          onRouteChange('home');
+          onRouteChange('home')
+          navigate("/colorrecognition");
       }
     })  
   }      

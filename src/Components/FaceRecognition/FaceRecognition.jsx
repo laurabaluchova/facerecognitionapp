@@ -1,9 +1,14 @@
 import React from 'react';
 import './FaceRecognition.css';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
+import Rank from '../Rank/Rank';
+import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 
-const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {    
+const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit}) => {    
   return (
+    <div>
+    <Rank name={user.name} entries={user.entries}/> 
+    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} /> 
     <div className='center ma '>
     <div className='absolute mt4'>          
 
@@ -24,9 +29,9 @@ const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {
                     left: item.leftCol,
                 }}
             ></div>
-        )) }    
-
-
+        
+        )) } 
+        </div>
    </div>
    </div>
   )

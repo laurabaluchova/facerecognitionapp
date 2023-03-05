@@ -2,10 +2,13 @@ import React from 'react';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
 import Rank from '../Rank/Rank';
 import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
+import './ColorRecognition.css';
+import ParticlesBg from 'particles-bg';
 
 const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit}) => {    
-  return (    
+  return (        
     <div>
+    <ParticlesBg type="cobweb" bg={true} color="#7c25cd" />      
     <Rank name={user.name} entries={user.entries}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} /> 
     <div className='center ma '>

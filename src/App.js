@@ -9,7 +9,6 @@ import Rank from './Components/Rank/Rank';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 import ParticlesBg from 'particles-bg';
-import ColorSwatch from './Components/ColorSwatch/ColorSwatch';
 
 function App() {
     const [user, setUser] = useState({
@@ -28,12 +27,12 @@ function App() {
     id: 'color-recognition',
     name: 'colors'
   });
-  const [imageColors, setImageColors] = useState("") 
+  const [imageColors, setImageColors] = useState("")
+  const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
 
-  const serverUrl = "https://ai-brain-server.onrender.com"
-  const isColorMode = (module) => {
-    return module.id === "color-recognition"
-  }
+  document.body.style.backgroundColor = myBackgroundColor;
+
+  const serverUrl = "https://ai-brain-server.onrender.com"  
    
     const loadUser = (data) => {
       setUser({
@@ -171,8 +170,8 @@ function App() {
 
     return (
       <div className="App" >
-        <ParticlesBg type="cobweb" bg={true} color="#7c25cd" />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
+        {/* <ParticlesBg type="cobweb" bg={true} color="#7c25cd" /> */}
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor}/>
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
               <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />

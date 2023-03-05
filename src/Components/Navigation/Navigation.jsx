@@ -1,33 +1,51 @@
 import React from 'react'
-import { NavLink, useResolvedPath, useMatch } from "react-router-dom"
+import { NavLink, useLocation } from "react-router-dom"
 import "./navigation.css"
 
-export default function  Navigation ( {onRouteChange, isSignedIn, changeModule}) { 
+export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule}) { 
+    const location = useLocation();
+    const performChangesForFaceDetection = () => {
+        setBackgroundColor("#7c25cd")
+        changeModule("face-detection");
+    }
+
+    const performChangesForColorRecognition = () => {
+        setBackgroundColor("#ffa500")
+        changeModule("color-recognition");
+    }
     
-    if (isSignedIn) {
+    if (location.pathname === "/facerecognition" || "/colorrecognition") {
+        console.log(location.pathname)
         return (
             <nav style={{display: 'flex', justifyContent: 'flex-end', backgroundColor: '#7c25cd', alignItems: "flex-end"}}>
-                <ul style={{marginRight: 'auto', display: "flex"}}>                    
-                    <NavLink 
+                <ul style={{marginRight: 'auto'}}>                    
+                    <li><NavLink 
                         to="/colorrecognition" 
-                        onClick={() => changeModule('color-recognition')} 
-                        className='colorrecognition f3 link dim pa2 pointer pa2 b'
-                        style={({ isActive }) => ({
-                            color: isActive ? '#7c25cd' : '#ffffff',
-                            background: isActive ? "#ffa500" : "#7c25cd"                        
-                          })}
-                    >Color Recognition</NavLink>
-                    <NavLink 
+                        onClick={performChangesForColorRecognition} 
+                        className='colorrecognition f3 link pa2 pointer pa2 b'
+                        // style={({ isActive }) => ({
+                        //     color: isActive ? '#7c25cd' : '#ffa500',
+                        //     background: isActive ? "#ffa500" : "#7c25cd", 
+                        //     marginRight: 0                       
+                        //   })}
+                        style={{
+                            color: "#7c25cd",
+                            background: "#ffa500", 
+                            marginRight: 0                       
+                          }}
+                    >Color Recognition</NavLink></li>
+                    <li><NavLink 
                         to="/facerecognition" 
-                        onClick={() => changeModule('face-detection')} 
-                        className='f3 link dim pa2 pr4 pointer pa2 b'
-                        style={({ isActive }) => ({
-                            color: isActive ? '#7c25cd' : '#ffffff',
-                            background: isActive ? "#ffa500" : "#7c25cd"  
-                          })}
-                    >Face Recognition</NavLink>
+                        onClick={performChangesForFaceDetection}                          
+                        className='f3 link pa2 pr4 pointer pa2 b'
+                        style={{
+                            color: '#ffa500',
+                            background: "#7c25cd",
+                            height: "100%"  
+                          }}
+                    >Face Recognition</NavLink></li>
                 </ul>  
-                <NavLink to="/signin" onClick={() => onRouteChange('signout')} className='f3 link dim underline pa2 pointer white'>Sign Out</NavLink>
+                <NavLink to="/signin" onClick={() => onRouteChange('signout')} className='f3 link dim pa2 pointer yellow'>Sign Out</NavLink>
             </nav>
         );
     } else {
@@ -39,15 +57,3 @@ export default function  Navigation ( {onRouteChange, isSignedIn, changeModule})
         );    
     }} 
 
-    // function CustomLink({ to, children, ...props }) {
-    //     const resolvedPath = useResolvedPath(to)
-    //     const isActive = useMatch({ path: resolvedPath.pathname, end: true })
-      
-    //     return (
-    //       <li className={isActive ? "active" : ""}>
-    //         <Link to={to} {...props}>
-    //           {children}
-    //         </Link>
-    //       </li>
-    //     )
-    //     }

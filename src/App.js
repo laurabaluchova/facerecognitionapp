@@ -18,7 +18,11 @@ function App() {
     entries: 0,
     joined: ''
   } );
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(() => {    
+    const saved = localStorage.getItem("input");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   const [imageUrl, setImageUrl] = useState('');
   const[box, setBox] = useState([]);
   const [isSignedIn, setIsSignIn] = useState(false);
@@ -44,6 +48,10 @@ function App() {
    if (location.pathname != "/facerecognition" && location.pathname != "/register") 
      setBackgroundColor('#FFB700')
    }, [location.pathname]);
+
+   useEffect(() => {
+    localStorage.setItem("input", JSON.stringify(input));
+  }, [input]);
    
     const loadUser = (data) => {
       setUser({
@@ -180,17 +188,16 @@ function App() {
       }
 
     return (
-      <div className="App" >
-        {/* <ParticlesBg type="cobweb" bg={true} color="#7c25cd" /> */}
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor}/>
+      <div className="App" >        
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput}/>
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
               <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit}/>} />
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>} />
               <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit} />}/>            
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>}/>            
           </Routes>
 
         {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>

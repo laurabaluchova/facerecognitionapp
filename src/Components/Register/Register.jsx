@@ -75,7 +75,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
       </fieldset>
       <div className="">
         <input onClick={onSubmitRegister}
-        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white" type="submit" value="Register" />
+        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value="Register" />
       </div>    
     </div>
   </main>

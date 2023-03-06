@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { NavLink, useLocation } from "react-router-dom"
 import "./navigation.css"
 
-export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule}) { 
+export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput}) { 
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
         changeModule("face-detection");
@@ -10,6 +10,11 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
 
     const performChangesForColorRecognition = () => {        
         changeModule("color-recognition");
+    }
+
+    const performChangesOnSignOut = () => {
+        onRouteChange('signout');
+        setInput("");
     }
     
     if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {
@@ -35,7 +40,7 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
                 </ul>  
                 <NavLink 
                     to="/signin" 
-                    onClick={() => onRouteChange('signout')} 
+                    onClick={performChangesOnSignOut} 
                     className='f3 link dim pa2 pointer yellow'                    
                 >Sign Out</NavLink>
             </nav>

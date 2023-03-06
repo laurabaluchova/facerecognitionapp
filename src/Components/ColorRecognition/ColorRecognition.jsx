@@ -8,7 +8,7 @@ import ParticlesBg from 'particles-bg';
 const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit}) => {    
   return (        
     <div>
-    <ParticlesBg type="cobweb" bg={true} color="#7c25cd" />      
+    <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
     <Rank name={user.name} entries={user.entries}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} /> 
     <div className='center ma '>

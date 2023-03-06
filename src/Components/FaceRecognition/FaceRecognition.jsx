@@ -8,7 +8,7 @@ import ParticlesBg from 'particles-bg';
 const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit}) => {    
   return (
     <div>
-    <ParticlesBg type="cobweb" bg={true} color="#ffa500" />
+    <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
     <Rank name={user.name} entries={user.entries}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} /> 
     <div className='center ma '>

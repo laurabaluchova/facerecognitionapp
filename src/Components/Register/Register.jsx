@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import ParticlesBg from 'particles-bg';
 
 function Register({loadUser, onRouteChange, serverUrl}) {
   const [email, setEmail] = useState('');
@@ -39,6 +40,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
   }      
     return (    
       <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
+      <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
       <main className="pa4 white">
           <div className="measure ">
               <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -47,7 +49,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
                       <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                       <input 
                       onChange={onNameChange}
-                      className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
                       type="text" 
                       name="name"  
                       id="name" />
@@ -56,7 +58,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
                       <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                       <input 
                       onChange={onEmailChange}
-                      className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
                       type="email" 
                       name="email-address"  
                       id="email-address" />
@@ -65,7 +67,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
           <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
           <input 
           onChange={onPasswordChange}
-          className="b pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+          className="b pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
           type="password" 
           name="password"  
           id="password" />

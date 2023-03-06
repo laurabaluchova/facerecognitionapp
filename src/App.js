@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';
 import Register from './Components/Register/Register';
@@ -32,7 +32,18 @@ function App() {
 
   document.body.style.backgroundColor = myBackgroundColor;
 
-  const serverUrl = "https://ai-brain-server.onrender.com"  
+  const serverUrl = "https://ai-brain-server.onrender.com"
+  const location = useLocation()
+  
+  useEffect(() => {
+    if (location.pathname === "/facerecognition" || location.pathname === "/register") 
+            setBackgroundColor("#5E2CA5")
+        }, [location.pathname]);
+
+  useEffect(() => {
+   if (location.pathname != "/facerecognition" && location.pathname != "/register") 
+     setBackgroundColor('#FFB700')
+   }, [location.pathname]);
    
     const loadUser = (data) => {
       setUser({

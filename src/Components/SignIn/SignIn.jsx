@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import ParticlesBg from 'particles-bg';
 
 function  SignIn ({loadUser, onRouteChange, serverUrl}) {
   
@@ -33,8 +34,9 @@ const onSubmitSignIn = (event) => {
     }
   })  
 }
-  return (    
+  return (       
     <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
+    <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />    
     <main className="pa4 white">
         <div className="measure ">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -42,7 +44,7 @@ const onSubmitSignIn = (event) => {
                 <div className="mt3">
                     <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                     <input onChange={onEmailChange}
-                    className="pa2 input-reset ba bg-transparent white hover-bg-white hover-black w-100" 
+                    className="pa2 input-reset ba bg-white purple hover-bg-purple hover-white w-100" 
                     type="email" 
                     name="email-address" 
                     id="email-address" />
@@ -50,7 +52,7 @@ const onSubmitSignIn = (event) => {
       <div className="mv3">
         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
         <input onChange={onPasswordChange} 
-        className="b pa2 input-reset white ba bg-transparent hover-bg-white hover-black w-100" 
+        className="b pa2 input-reset purple ba bg-white hover-bg-purple hover-white w-100" 
         type="password" 
         name="password"  
         id="password" />
@@ -61,7 +63,7 @@ const onSubmitSignIn = (event) => {
       className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white" type="submit" value="Sign in" />
     </div>
     <div className="lh-copy mt3">
-      <p onClick={() => onRouteChange('register')} className="f6 link dim white db underline pointer">Register</p>      
+      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link dim white db underline pointer">Register</Link>      
     </div>
   </div>
 </main>

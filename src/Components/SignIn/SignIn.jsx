@@ -63,7 +63,7 @@ const onSubmitSignIn = (event) => {
       className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value="Sign in" />
     </div>
     <div className="lh-copy mt3">
-      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link dim white db underline pointer">Register</Link>      
+      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link hover-purple white db pointer">Register</Link>      
     </div>
   </div>
 </main>

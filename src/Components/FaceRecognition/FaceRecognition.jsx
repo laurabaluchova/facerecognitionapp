@@ -1,15 +1,18 @@
 import React from 'react';
 import './FaceRecognition.css';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
+import Rank from '../Rank/Rank';
+import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
+import ParticlesBg from 'particles-bg';
 
-const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {    
+const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit, input}) => {    
   return (
+    <div>
+    <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
+    <Rank name={user.name} entries={user.entries}/> 
+    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input}/> 
     <div className='center ma '>
-    <div className='absolute mt4'>          
-
-    {module.id === "color-recognition"
-    ? <ColorSwatch imageColor={imageColors} module={module}/>   
-    : console.log("kekeke")}  
+    <div className='absolute mt4'>    
     
     <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>
      {
@@ -24,9 +27,9 @@ const  FaceRecognition = ({imageUrl, box, module, imageColors}) => {
                     left: item.leftCol,
                 }}
             ></div>
-        )) }    
-
-
+        
+        )) } 
+        </div>
    </div>
    </div>
   )

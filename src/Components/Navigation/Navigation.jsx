@@ -1,25 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { NavLink, useLocation } from "react-router-dom"
+import "./navigation.css"
 
-const  Navigation = ( {onRouteChange, isSignedIn, changeModule}) => {
-  
-    if (isSignedIn) {
+export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput}) { 
+    const location = useLocation();
+    const performChangesForFaceDetection = () => {        
+        changeModule("face-detection");
+    }
+
+    const performChangesForColorRecognition = () => {        
+        changeModule("color-recognition");
+    }
+
+    const performChangesOnSignOut = () => {
+        onRouteChange('signout');
+        setInput("");
+    }
+    
+    if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {
+        console.log(location.pathname)
         return (
-            <nav style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <div style={{marginRight: 'auto', display: "flex"}}>
-                    <p onClick={() => changeModule('face-detection')} className='f3 link b dim pa2 pr4 pointer white pa2'>Face Recognition</p>
-                    <p onClick={() => changeModule('color-recognition')} className='f3 link dim b pa2 pointer white pa2'>Color Recognition</p>
-                </div>  
-                <p onClick={() => onRouteChange('signout')} className='f3 link dim underline pa2 pointer white'>Sign Out</p>
+            <nav style={{display: 'flex', justifyContent: 'flex-end', backgroundColor: '#5E2CA5', alignItems: "flex-end"}}>
+                <ul style={{marginRight: 'auto'}}>                    
+                    <li><NavLink 
+                        to="/colorrecognition" 
+                        onClick={performChangesForColorRecognition} 
+                        className='colorrecognition f3 link pa2 pointer pa2 b purple bg-gold'
+                        // style={({ isActive }) => ({
+                        //     color: isActive ? '#7c25cd' : '#ffa500',
+                        //     background: isActive ? "#ffa500" : "#7c25cd", 
+                        //     marginRight: 0                       
+                        //   })}                        
+                    >Color Recognition</NavLink></li>
+                    <li><NavLink 
+                        to="/facerecognition" 
+                        onClick={performChangesForFaceDetection}                          
+                        className='f3 link pa2 pr4 pointer pa2 b gold bg-purple'                        
+                    >Face Recognition</NavLink></li>
+                </ul>  
+                <NavLink 
+                    to="/signin" 
+                    onClick={performChangesOnSignOut} 
+                    className='f3 link dim pa2 pointer yellow'                    
+                >Sign Out</NavLink>
             </nav>
         );
     } else {
         return (
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>                      
-            <p onClick={() => onRouteChange('signin')} className='f3 link dim underline pa2 pointer white'>Sign In</p>
-            <p onClick={() => onRouteChange('register')} className='f3 link dim underline pa2 pointer white'>Register </p>                         
+            <NavLink to="/signin" onClick={() => onRouteChange('signin')} className='f3 dim pa2 pointer white'>Sign In</NavLink>
+            <NavLink to="/register" onClick={() => onRouteChange('register')} className='f3 dim pa2 pointer white'>Register </NavLink>                         
              </nav>        
         );    
-    }
-}
+    }} 
 
-export default Navigation;

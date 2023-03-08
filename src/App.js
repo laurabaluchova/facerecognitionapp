@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';
 import Register from './Components/Register/Register';
 import ImageLinkForm from './Components/ImageLInkForm/ImageLinkForm';
 import Rank from './Components/Rank/Rank';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 import ParticlesBg from 'particles-bg';
 
 function App() {
@@ -16,7 +18,11 @@ function App() {
     entries: 0,
     joined: ''
   } );
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(() => {    
+    const saved = localStorage.getItem("input");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
   const [imageUrl, setImageUrl] = useState('');
   const[box, setBox] = useState([]);
   const [isSignedIn, setIsSignIn] = useState(false);
@@ -26,9 +32,27 @@ function App() {
     name: 'colors'
   });
   const [imageColors, setImageColors] = useState("")
+  const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
+
+  document.body.style.backgroundColor = myBackgroundColor;
 
   const serverUrl = "https://ai-brain-server.onrender.com"
-    
+  const location = useLocation()
+  
+  useEffect(() => {
+    if (location.pathname === "/facerecognition" || location.pathname === "/register") 
+            setBackgroundColor("#5E2CA5")
+        }, [location.pathname]);
+
+  useEffect(() => {
+   if (location.pathname != "/facerecognition" && location.pathname != "/register") 
+     setBackgroundColor('#FFB700')
+   }, [location.pathname]);
+
+   useEffect(() => {
+    localStorage.setItem("input", JSON.stringify(input));
+  }, [input]);
+   
     const loadUser = (data) => {
       setUser({
         id: data.id,
@@ -102,9 +126,10 @@ function App() {
     const displayColorSwatch = (colorSwatch) => {
       console.log(colorSwatch[0].raw_hex)
       setImageColors(colorSwatch[0].raw_hex)
+      return imageColors      
     }
 
-    const onInputChange = (event) => {
+   const onInputChange = (event) => {
       setInput(event.target.value);
     };
 
@@ -145,8 +170,8 @@ function App() {
         if (module.id === "face-detection") {
           displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
           ))} else {
-            displayColorSwatch(prepareColorsArray(response))
-            console.log("cudne",response)
+            displayColorSwatch(prepareColorsArray(response))      
+            console.log("cudne", response)            
           }
 
       })
@@ -163,9 +188,19 @@ function App() {
       }
 
     return (
-      <div className="App">
-        <ParticlesBg type="cobweb" bg={true} color="#FFFFFF" />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
+      <div className="App" >        
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput}/>
+        <Routes>
+              <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
+              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
+              <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
+              <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>} />
+              <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors} 
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>}/>            
+          </Routes>
+
+        {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
         { route === 'home' 
         ? <div>            
             <Rank name={user.name} entries={user.entries}/>
@@ -178,8 +213,10 @@ function App() {
           : <Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
         )
         
-        }
-      </div>
-    )};
+        } */}
+      </div>       
+      );
+    }
+    ;
 
     export default App;

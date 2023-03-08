@@ -1,10 +1,11 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 0;  
   font-family: 'Courier New', monospace;
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, #064BA5 100%);
+  /* background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, #064BA5 100%); */
   /* background-color: #035E70; */
   color: white;
+  font-weight: bold;
 }
 
 button {

@@ -1,13 +1,51 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import ParticlesBg from 'particles-bg';
+import { useFormik } from 'formik';
 
-function Register({loadUser, onRouteChange, serverUrl}) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+const validate = (values) => {
+  let errors = {};
 
-  const onEmailChange = (event) => {
-    setEmail(event.target.value)
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
   }
+
+  return errors
+}
+
+function Register({loadUser, onRouteChange, serverUrl}) { 
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');  
+
+  const navigate = useNavigate()
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validate,
+    onSubmit: (event) => {      
+      fetch(`${serverUrl}/register`, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: formik.values.email,
+          password: password,
+          name: name,
+        })
+      })
+        .then(response => response.json())
+        .then(user => {
+          if (user.id) {
+            loadUser(user)
+            onRouteChange('home')
+            navigate("/colorrecognition");
+        }
+      })  
+    }      })    
+
   const onPasswordChange = (event) => {
     setPassword(event.target.value)
   }
@@ -15,26 +53,10 @@ function Register({loadUser, onRouteChange, serverUrl}) {
     setName(event.target.value)
   }
 
-  const onSubmitRegister = (event) => {
-    fetch(`${serverUrl}/register`, {
-      method: 'post',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
-      })
-    })
-      .then(response => response.json())
-      .then(user => {
-        if (user.id) {
-          loadUser(user)
-          onRouteChange('home');
-      }
-    })  
-  }      
+  
     return (    
       <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
+      <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
       <main className="pa4 white">
           <div className="measure ">
               <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -43,7 +65,7 @@ function Register({loadUser, onRouteChange, serverUrl}) {
                       <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                       <input 
                       onChange={onNameChange}
-                      className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
                       type="text" 
                       name="name"  
                       id="name" />
@@ -51,25 +73,29 @@ function Register({loadUser, onRouteChange, serverUrl}) {
                   <div className="mt3">
                       <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                       <input 
-                      onChange={onEmailChange}
-                      className="pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+                      onChange={formik.handleChange} value={formik.values.email}                     
+                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
                       type="email" 
-                      name="email-address"  
-                      id="email-address" />
-                  </div>
+                      name="email"  
+                      id="email-address" />  
+                       {formik.touched.email && formik.errors.email && (
+                         <p className='gold f6 mt1 normal'>{formik.errors.email}</p>
+                        )}                    
+                  </div>                  
         <div className="mv3">
           <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
           <input 
           onChange={onPasswordChange}
-          className="b pa2 white input-reset ba bg-transparent hover-bg-white hover-black w-100" 
+          className="b pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
           type="password" 
           name="password"  
           id="password" />
         </div>      
       </fieldset>
       <div className="">
-        <input onClick={onSubmitRegister}
-        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white" type="submit" value="Register" />
+        <input
+        onClick={formik.handleSubmit}
+        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value="Register" />
       </div>    
     </div>
   </main>

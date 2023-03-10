@@ -1,12 +1,19 @@
 import React from 'react';
+import { Link } from "react-router-dom"
 import './ImageLinkForm.css';
 
-const  ImageLinkForm = ({onInputChange, onSubmit, module, input}) => {    
+const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser}) => {    
   return (
     <div>
+      {isGoogleUser
+      ?
         <p className='f4'>          
+            To count your detected images&nbsp;
+            <Link to="/register" >create account here</Link>
+         </p>
+      : <p className='f4'>          
             {`Detect ${module.name} in your pictures with this Magic Brain App`}
-        </p>
+        </p>}
         <p className='f5 i'>
             {`Insert image URL to detect ${module.name}`}
         </p>

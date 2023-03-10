@@ -2,9 +2,9 @@ import React, { useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
-import axios from "axios";
+import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, onRouteChange, serverUrl, setUser}) {
+function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isGoogleUser}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -70,15 +70,19 @@ const onSubmitSignIn = (event) => {
     <div>
     <GoogleLogin 
             onSuccess={credentialResponse => {
-              console.log(credentialResponse);
+              setIsGoogleUser(true)                            
+              let userDataToken = credentialResponse
+              console.log(userDataToken)
+              let decodedToken = jwt_decode(userDataToken.credential)
+              console.log(decodedToken)
               navigate("/colorrecognition")
               setUser({
                 id: '',
-                name: 'Google User',
+                name: decodedToken.given_name,
                 email: '',
-                entries: 0,
+                entries: "",
                 joined: ''
-              })
+              })              
             }}
          
             onError={() => {

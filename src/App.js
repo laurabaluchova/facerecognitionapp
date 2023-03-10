@@ -33,6 +33,7 @@ function App() {
   });
   const [imageColors, setImageColors] = useState("")
   const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
+  const [isGoogleUser, setIsGoogleUser] = useState(false);
 
   document.body.style.backgroundColor = myBackgroundColor;
 
@@ -188,16 +189,16 @@ function App() {
       }
 
     return (
-      <div className="App" >        
-        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput}/>
+      <div className="App" >              
+        <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser}/>
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
-              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} setUser={setUser}/>} />
+              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} setUser={setUser} setIsGoogleUser={setIsGoogleUser} isGoogleUser={isGoogleUser}/>} />
               <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>} />
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>} />
               <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input}/>}/>            
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>}/>            
           </Routes>
 
         {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>

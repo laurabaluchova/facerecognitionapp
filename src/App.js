@@ -37,7 +37,7 @@ function App() {
 
   document.body.style.backgroundColor = myBackgroundColor;
 
-  const serverUrl = "https://magic-brain.cyclic.app"
+  const serverUrl = "https://ai-brain-server.onrender.com"
   const location = useLocation()
   
   useEffect(() => {

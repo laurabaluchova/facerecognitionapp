@@ -1,8 +1,10 @@
 import React, { useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesBg from 'particles-bg';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, onRouteChange, serverUrl}) {
+function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isGoogleUser}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -63,7 +65,32 @@ const onSubmitSignIn = (event) => {
       className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value="Sign in" />
     </div>
     <div className="lh-copy mt3">
-      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link hover-purple white db pointer">Register</Link>      
+      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link hover-purple white db pointer mb3">Register</Link>      
+    </div>
+    <div>
+    <GoogleLogin 
+            onSuccess={credentialResponse => {
+              setIsGoogleUser(true)                            
+              let userDataToken = credentialResponse
+              console.log(userDataToken)
+              let decodedToken = jwt_decode(userDataToken.credential)
+              console.log(decodedToken)
+              navigate("/colorrecognition")
+              setUser({
+                id: '',
+                name: decodedToken.given_name,
+                email: '',
+                entries: "",
+                joined: ''
+              })              
+            }}
+         
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            useOneTap
+          
+          />
     </div>
   </div>
 </main>

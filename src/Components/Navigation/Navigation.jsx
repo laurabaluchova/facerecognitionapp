@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { NavLink, useLocation } from "react-router-dom"
 import "./navigation.css"
 
-export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput}) { 
+export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput, setIsGoogleUser}) { 
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
         changeModule("face-detection");
@@ -15,6 +15,7 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
     const performChangesOnSignOut = () => {
         onRouteChange('signout');
         setInput("");
+        setIsGoogleUser(false);
     }
     
     if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {

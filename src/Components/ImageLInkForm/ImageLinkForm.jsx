@@ -9,7 +9,7 @@ const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser}) 
       ?
         <p className='f4'>          
             To count your detected images&nbsp;
-            <Link to="/register" >create account here</Link>
+            <Link to="/register" className='white' >create account here</Link>
          </p>
       : <p className='f4'>          
             {`Detect ${module.name} in your pictures with this Magic Brain App`}

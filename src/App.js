@@ -34,6 +34,8 @@ function App() {
   const [imageColors, setImageColors] = useState("")
   const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
   const [isGoogleUser, setIsGoogleUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cursor, setCursor] = useState('default');
 
   document.body.style.backgroundColor = myBackgroundColor;
 
@@ -193,7 +195,8 @@ function App() {
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser}/>
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
-              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} setUser={setUser} setIsGoogleUser={setIsGoogleUser} isGoogleUser={isGoogleUser}/>} />
+              <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} 
+                setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}/>}/>
               <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
                 user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>} />

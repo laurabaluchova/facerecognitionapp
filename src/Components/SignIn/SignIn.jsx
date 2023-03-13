@@ -4,21 +4,12 @@ import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor}) {
+function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor, changeCursor}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
 
-  const navigate = useNavigate()
-
-  const changeCursor = () => {
-    setCursor(prevState => {
-      if(prevState === 'default'){
-        return 'wait';
-      }
-      return 'default';
-    });
-  }
+  const navigate = useNavigate()  
 
   const onEmailChange = (event) => {
     setSignInEmail(event.target.value)

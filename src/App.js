@@ -41,6 +41,15 @@ function App() {
 
   const serverUrl = "https://ai-brain-server.onrender.com"
   const location = useLocation()
+
+  const changeCursor = () => {
+    setCursor(prevState => {
+      if(prevState === 'default'){
+        return 'wait';
+      }
+      return 'default';
+    });
+  }
   
   useEffect(() => {
     if (location.pathname === "/facerecognition" || location.pathname === "/register") 
@@ -196,7 +205,8 @@ function App() {
         <Routes>
               <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
               <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} 
-                setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}/>}/>
+                setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} 
+                setCursor={setCursor} changeCursor={changeCursor}/>}/>
               <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
               <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
                 user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>} />

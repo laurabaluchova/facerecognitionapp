@@ -7,7 +7,7 @@ const validate = (values) => {
   let errors = {};
 
   if (!values.email) {
-    errors.email = 'Required'
+    errors.email = ''
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address'
   }
@@ -15,7 +15,7 @@ const validate = (values) => {
   return errors
 }
 
-function Register({loadUser, onRouteChange, serverUrl}) { 
+function Register({loadUser, onRouteChange, serverUrl, isLoading, setIsLoading, cursor, setCursor, changeCursor}) { 
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');  
 
@@ -26,7 +26,10 @@ function Register({loadUser, onRouteChange, serverUrl}) {
       email: "",
     },
     validate,
-    onSubmit: (event) => {      
+    onSubmit: (event) => {  
+      if (password !== "" && name !== "") {
+        setIsLoading(true);
+        changeCursor()    
       fetch(`${serverUrl}/register`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -41,10 +44,20 @@ function Register({loadUser, onRouteChange, serverUrl}) {
           if (user.id) {
             loadUser(user)
             onRouteChange('home')
+            setIsLoading(false)
+            changeCursor()
             navigate("/colorrecognition");
         }
-      })  
-    }      })    
+      }) 
+      .catch(() => {    
+        setIsLoading(false);
+        changeCursor();
+    }); 
+    } else {
+      console.log("provide register credentials")
+    }
+  }     
+  })    
 
   const onPasswordChange = (event) => {
     setPassword(event.target.value)
@@ -55,7 +68,8 @@ function Register({loadUser, onRouteChange, serverUrl}) {
 
   
     return (    
-      <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
+      <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
+      style={{ cursor: cursor }}>
       <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
       <main className="pa4 white">
           <div className="measure ">
@@ -95,7 +109,8 @@ function Register({loadUser, onRouteChange, serverUrl}) {
       <div className="">
         <input
         onClick={formik.handleSubmit}
-        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value="Register" />
+        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value={isLoading ? "Loading..." : "Register" }
+        style={{ cursor: cursor }} />
       </div>    
     </div>
   </main>

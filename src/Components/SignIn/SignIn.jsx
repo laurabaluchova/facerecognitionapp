@@ -1,44 +1,57 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isGoogleUser}) {
+function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor, changeCursor}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate()  
 
   const onEmailChange = (event) => {
     setSignInEmail(event.target.value)
   }
   const onPasswordChange = (event) => {
-    setSignInPassword(event.target.value)
+    setSignInPassword(event.target.value)    
   }
 
 const onSubmitSignIn = (event) => {
-  fetch(`${serverUrl}/signin`, {
-    method: 'post',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      email: signInEmail,
-      password: signInPassword
+  if (signInEmail !== "" && signInPassword !== "") {
+    setIsLoading(true);
+    changeCursor()    
+    fetch(`${serverUrl}/signin`, {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: signInEmail,
+        password: signInPassword
+      })
     })
-  })
-    .then(response => response.json())
-    .then(user => {
-      if (user.id) {
-        loadUser(user);
-        onRouteChange('home');
-        navigate("/colorrecognition")
-    }
-  })  
+      .then(response => response.json())
+      .then(user => {
+        if (user.id) {
+          loadUser(user);
+          onRouteChange('home');
+          setIsLoading(false)
+          changeCursor()
+          navigate("/colorrecognition")
+      }
+    })  
+    .catch(() => {    
+      setIsLoading(false);
+      changeCursor();
+  });
+  } else {
+    console.log("please provide your credentials")
+  }
 }
   return (       
-    <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center">
-    <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />    
+    <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
+      style={{ cursor: cursor }}>
+    <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />     
     <main className="pa4 white">
         <div className="measure ">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -62,10 +75,11 @@ const onSubmitSignIn = (event) => {
     </fieldset>
     <div className="">
       <input onClick={onSubmitSignIn}
-      className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value="Sign in" />
+      className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value={isLoading ? "Loading..." : "Sign in" }
+      style={{ cursor: cursor }}/>
     </div>
     <div className="lh-copy mt3">
-      <Link to="/register" onClick={() => onRouteChange('register')} className="f6 link hover-purple white db pointer mb3">Register</Link>      
+      <Link to="/register" onClick={() => onRouteChange('register')} disabled={isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>      
     </div>
     <div>
     <GoogleLogin 

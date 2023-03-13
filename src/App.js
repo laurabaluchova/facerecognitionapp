@@ -64,6 +64,11 @@ function App() {
    useEffect(() => {
     localStorage.setItem("input", JSON.stringify(input));
   }, [input]);
+
+  const validateUrl = URL => {
+    const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');    
+    return regex.test(URL);
+  };
    
     const loadUser = (data) => {
       setUser({
@@ -146,7 +151,10 @@ function App() {
     };
 
     const onSubmit = () => {
-      setImageUrl(input);      
+      setImageUrl(input);
+      if (input !== "" && validateUrl(input)) { 
+      setIsLoading(true);
+      changeCursor();      
       fetch(`${serverUrl}/imageurl`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -175,8 +183,14 @@ function App() {
                 joined: user.joined
 
               });
+              setIsLoading(false)
+              changeCursor()
             })
-            .catch(console.log)
+          .catch(() => {    
+              setIsLoading(false);
+              changeCursor();
+              console.log()
+          });
 
         }
         if (module.id === "face-detection") {
@@ -188,6 +202,9 @@ function App() {
 
       })
       .catch(err => console.log(err));
+    } else {
+      console.log("input empty")
+    }
   }
 
     const onRouteChange = (route) => {
@@ -203,15 +220,21 @@ function App() {
       <div className="App" >              
         <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule} setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser}/>
         <Routes>
-              <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />              
+              <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} 
+                setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} 
+                setCursor={setCursor} changeCursor={changeCursor}/>} />              
               <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl} 
                 setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} 
                 setCursor={setCursor} changeCursor={changeCursor}/>}/>
-              <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/>} />
+              <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}
+                isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} 
+                setCursor={setCursor} changeCursor={changeCursor}/>} />
               <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>} />
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser} 
+                isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor}/>} />
               <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors} 
-                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}/>}/>            
+                user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
+                isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor}/>}/>            
           </Routes>
 
         {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>

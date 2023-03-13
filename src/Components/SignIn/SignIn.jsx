@@ -19,31 +19,34 @@ function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser,
   }
 
 const onSubmitSignIn = (event) => {
-  setIsLoading(true);
-  changeCursor()
-  console.log("is loading", isLoading)
-  fetch(`${serverUrl}/signin`, {
-    method: 'post',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      email: signInEmail,
-      password: signInPassword
+  if (signInEmail !== "" && signInPassword !== "") {
+    setIsLoading(true);
+    changeCursor()    
+    fetch(`${serverUrl}/signin`, {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: signInEmail,
+        password: signInPassword
+      })
     })
-  })
-    .then(response => response.json())
-    .then(user => {
-      if (user.id) {
-        loadUser(user);
-        onRouteChange('home');
-        setIsLoading(false)
-        changeCursor()
-        navigate("/colorrecognition")
-    }
-  })  
-  .catch(() => {    
-    setIsLoading(false);
-    changeCursor();
- });
+      .then(response => response.json())
+      .then(user => {
+        if (user.id) {
+          loadUser(user);
+          onRouteChange('home');
+          setIsLoading(false)
+          changeCursor()
+          navigate("/colorrecognition")
+      }
+    })  
+    .catch(() => {    
+      setIsLoading(false);
+      changeCursor();
+  });
+  } else {
+    console.log("please provide your credentials")
+  }
 }
   return (       
     <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"

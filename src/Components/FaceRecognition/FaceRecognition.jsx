@@ -5,12 +5,14 @@ import Rank from '../Rank/Rank';
 import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 import ParticlesBg from 'particles-bg';
 
-const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit, input, isGoogleUser}) => {    
+const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit, input, isGoogleUser, 
+  isLoading, setIsLoading, cursor, setCursor, changeCursor}) => {    
   return (
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
     <Rank name={user.name} entries={user.entries} isGoogleUser={isGoogleUser} module={module}/> 
-    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} isGoogleUser={isGoogleUser}/> 
+    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} isGoogleUser={isGoogleUser} 
+    isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor}/> 
     <div className='center ma '>
     <div className='absolute mt4'>    
     

@@ -2,14 +2,16 @@ import React, { useEffect } from 'react'
 import { NavLink, useLocation } from "react-router-dom"
 import "./navigation.css"
 
-export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput, setIsGoogleUser}) { 
+export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput, setIsGoogleUser, setIsLoading}) { 
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
-        changeModule("face-detection");
+        changeModule("face-detection");   
+        setIsLoading(false);     
     }
 
     const performChangesForColorRecognition = () => {        
         changeModule("color-recognition");
+        setIsLoading(false);
     }
 
     const performChangesOnSignOut = () => {
@@ -42,7 +44,7 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
                 <NavLink 
                     to="/signin" 
                     onClick={performChangesOnSignOut} 
-                    className='f3 link dim pa2 pointer yellow'                    
+                    className='f3 link dim pa2 pointer yellow mr4'                    
                 >Sign Out</NavLink>
             </nav>
         );

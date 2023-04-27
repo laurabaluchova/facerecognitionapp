@@ -6,6 +6,7 @@ body {
   /* background-color: #035E70; */
   color: white;
   font-weight: bold;
+  overflow-x: hidden;
 }
 
 button {

@@ -46,6 +46,7 @@ function Register({loadUser, onRouteChange, serverUrl, isLoading, setIsLoading, 
             onRouteChange('home')
             setIsLoading(false)
             changeCursor()
+            localStorage.setItem("isLoggedIn", "1")
             navigate("/colorrecognition");
         }
       }) 

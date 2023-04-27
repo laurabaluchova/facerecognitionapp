@@ -37,6 +37,8 @@ const onSubmitSignIn = (event) => {
           onRouteChange('home');
           setIsLoading(false)
           changeCursor()
+          localStorage.setItem("isLoggedIn", user.name)
+          // play with local storage
           navigate("/colorrecognition")
       }
     })  

@@ -218,7 +218,7 @@ function App() {
   }
 
   return (
-    <div className="App" >
+    <div className="App" style={{ cursor: cursor }}>
       <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}
         setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
       <Routes>

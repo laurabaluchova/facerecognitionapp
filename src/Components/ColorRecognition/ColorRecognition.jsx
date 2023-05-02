@@ -6,7 +6,7 @@ import './ColorRecognition.css';
 import ParticlesBg from 'particles-bg';
 
 const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, isGoogleUser,
-  isLoading, setIsLoading, cursor, setCursor, changeCursor}) => {    
+  isLoading, setIsLoading, cursor, setCursor, changeCursor, validateUrl}) => {    
   return (        
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
@@ -16,7 +16,7 @@ const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, 
     <div className='center ma '>
     <div className='absolute mt4'>
     
-    {imageUrl != "" && <ColorSwatch imageColors={imageColors}/>}
+    {validateUrl(imageUrl) && <ColorSwatch imageColors={imageColors}/>}
     
     <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>         
     </div>       

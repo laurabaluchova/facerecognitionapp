@@ -1,11 +1,10 @@
 import React from 'react';
 import './FaceRecognition.css';
-import ColorSwatch from '../ColorSwatch/ColorSwatch';
 import Rank from '../Rank/Rank';
 import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 import ParticlesBg from 'particles-bg';
 
-const  FaceRecognition = ({imageUrl, box, module, imageColors, user, onInputChange, onSubmit, input, isGoogleUser, 
+const  FaceRecognition = ({imageUrl, box, module, user, onInputChange, onSubmit, input, isGoogleUser, 
   isLoading, setIsLoading, cursor, setCursor, changeCursor}) => {    
   return (
     <div>

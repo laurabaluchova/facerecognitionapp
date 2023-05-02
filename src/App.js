@@ -20,14 +20,13 @@ function App() {
     const initialValue = JSON.parse(saved);
     return initialValue || "";
   });
-  const [imageUrl, setImageUrl] = useState('');
+  
   const [box, setBox] = useState([]);  
-
   const [module, setModule] = useState({
     id: 'color-recognition',
     name: 'colors'
   });
-  const [imageColors, setImageColors] = useState("")
+  const [imageColors, setImageColors] = useState("");
   const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
   const [isGoogleUser, setIsGoogleUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +52,7 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (location.pathname != "/facerecognition" && location.pathname != "/register")
+    if (location.pathname !== "/facerecognition" && location.pathname !== "/register")
       setBackgroundColor('#FFB700')
   }, [location.pathname]);
 
@@ -61,6 +60,7 @@ function App() {
     localStorage.setItem("input", JSON.stringify(input));
   }, [input]);
 
+  
   const validateUrl = URL => {
     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
     return regex.test(URL);
@@ -77,7 +77,7 @@ function App() {
   }
 
   const changeModule = (newModule) => {
-    if (newModule != "face-detection") {
+    if (newModule !== "face-detection") {
       setModule({
         id: "color-recognition",
         name: "colors"
@@ -88,9 +88,8 @@ function App() {
         id: "face-detection",
         name: 'faces'
       })
-    }
-    console.log(module)
-  }
+    }    
+  };
 
   const calculateFaceLocation = (locationsArray) => {
     const image = document.getElementById('inputimage');
@@ -114,8 +113,7 @@ function App() {
     console.log(cleaned_data)
     cleaned_data.regions.forEach((item) => {
       locationsArray.push(item.region_info.bounding_box)
-    })
-    console.log("loc array", locationsArray)
+    })    
     return locationsArray
   };
 
@@ -143,11 +141,11 @@ function App() {
   }
 
   const onInputChange = (event) => {
-    setInput(event.target.value);
+    setInput(event.target.value);    
   };
 
   const onSubmit = () => {
-    setImageUrl(input);
+    
     if (input !== "" && validateUrl(input)) {
       setIsLoading(true);
       changeCursor();
@@ -193,8 +191,7 @@ function App() {
             displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
             ))
           } else {
-            displayColorSwatch(prepareColorsArray(response))
-            console.log("cudne", response)
+            displayColorSwatch(prepareColorsArray(response))            
           }
 
         })
@@ -202,45 +199,29 @@ function App() {
     } else {
       console.log("input empty")
     }
-  }
+  } 
 
-  
   return (
     <div className="App" style={{ cursor: cursor }}>
-      <Navigation changeModule={changeModule}
-        setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
+      <Navigation changeModule={changeModule} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
       <Routes>
         <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
+        {/* <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-          setCursor={setCursor} changeCursor={changeCursor} />} />
+          setCursor={setCursor} changeCursor={changeCursor} />} /> */}
         <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
           isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors}
+        <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
           user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-          isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}
+          isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} validateUrl={validateUrl}/>} />
+        <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module} 
           user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
           isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} />} />
       </Routes>
 
-      {/* <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}/>
-        { route === 'home' 
-        ? <div>            
-            <Rank name={user.name} entries={user.entries}/>
-            <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module}/>
-            <FaceRecognition box={box} imageUrl={imageUrl} module={module} imageColors={imageColors}/>
-        </div>
-        : (
-          route === "signin"
-          ? <SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
-          : <Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}/> 
-        )
-        
-        } */}
     </div>
   );
 }

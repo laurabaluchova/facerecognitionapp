@@ -42,7 +42,7 @@ export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, 
                     >Face Recognition</NavLink></li>
                 </ul>  
                 <NavLink 
-                    to="/signin" 
+                    to="/" 
                     onClick={performChangesOnSignOut} 
                     className='f3 link dim pa2 pointer yellow mr4'                    
                 >Sign Out</NavLink>
@@ -51,7 +51,7 @@ export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, 
     } else {
         return (
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>                      
-            <NavLink to="/signin" className='f3 dim pa2 pointer white'>Sign In</NavLink>
+            <NavLink to="/" className='f3 dim pa2 pointer white'>Sign In</NavLink>
             <NavLink to="/register" className='f3 dim pa2 pointer white'>Register </NavLink>                         
              </nav>        
         );    

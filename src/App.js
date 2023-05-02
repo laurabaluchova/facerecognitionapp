@@ -4,11 +4,8 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Navigation from './Components/Navigation/Navigation';
 import SignIn from './Components/SignIn/SignIn';
 import Register from './Components/Register/Register';
-import ImageLinkForm from './Components/ImageLInkForm/ImageLinkForm';
-import Rank from './Components/Rank/Rank';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
-import ParticlesBg from 'particles-bg';
 
 function App() {
   const [user, setUser] = useState({

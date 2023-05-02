@@ -18,6 +18,7 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
         onRouteChange('signout');
         setInput("");
         setIsGoogleUser(false);
+        localStorage.setItem("input", "");
     }
     
     if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {

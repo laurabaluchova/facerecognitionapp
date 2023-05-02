@@ -15,7 +15,7 @@ const validate = (values) => {
   return errors
 }
 
-function Register({loadUser, onRouteChange, serverUrl, isLoading, setIsLoading, cursor, setCursor, changeCursor}) { 
+function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor, changeCursor}) { 
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');  
 
@@ -43,7 +43,7 @@ function Register({loadUser, onRouteChange, serverUrl, isLoading, setIsLoading, 
         .then(user => {
           if (user.id) {
             loadUser(user)
-            onRouteChange('home')
+            
             setIsLoading(false)
             changeCursor()
             localStorage.setItem("isLoggedIn", "1")

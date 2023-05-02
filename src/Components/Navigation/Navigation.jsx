@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { NavLink, useLocation } from "react-router-dom"
 import "./navigation.css"
 
-export default function  Navigation ( {onRouteChange, setBackgroundColor, changeModule, setInput, setIsGoogleUser, setIsLoading}) { 
+export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, setIsLoading}) { 
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
         changeModule("face-detection");   
@@ -14,8 +14,7 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
         setIsLoading(false);
     }
 
-    const performChangesOnSignOut = () => {
-        onRouteChange('signout');
+    const performChangesOnSignOut = () => {        
         setInput("");
         setIsGoogleUser(false);
         localStorage.setItem("input", "");
@@ -52,8 +51,8 @@ export default function  Navigation ( {onRouteChange, setBackgroundColor, change
     } else {
         return (
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>                      
-            <NavLink to="/signin" onClick={() => onRouteChange('signin')} className='f3 dim pa2 pointer white'>Sign In</NavLink>
-            <NavLink to="/register" onClick={() => onRouteChange('register')} className='f3 dim pa2 pointer white'>Register </NavLink>                         
+            <NavLink to="/signin" className='f3 dim pa2 pointer white'>Sign In</NavLink>
+            <NavLink to="/register" className='f3 dim pa2 pointer white'>Register </NavLink>                         
              </nav>        
         );    
     }} 

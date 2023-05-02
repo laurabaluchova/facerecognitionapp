@@ -21,9 +21,8 @@ function App() {
     return initialValue || "";
   });
   const [imageUrl, setImageUrl] = useState('');
-  const [box, setBox] = useState([]);
-  const [isSignedIn, setIsSignIn] = useState(false);
-  const [route, setRoute] = useState('signin');
+  const [box, setBox] = useState([]);  
+
   const [module, setModule] = useState({
     id: 'color-recognition',
     name: 'colors'
@@ -205,27 +204,19 @@ function App() {
     }
   }
 
-  const onRouteChange = (route) => {
-    if (route === 'signout') {
-      setIsSignIn(false)
-    } else if (route === 'home') {
-      setIsSignIn(true)
-    }
-    setRoute(route);
-  }
-
+  
   return (
     <div className="App" style={{ cursor: cursor }}>
-      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} changeModule={changeModule}
+      <Navigation changeModule={changeModule}
         setBackgroundColor={setBackgroundColor} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
       <Routes>
-        <Route path="/" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}
+        <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/signin" element={<SignIn loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}
+        <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/register" element={<Register loadUser={loadUser} onRouteChange={onRouteChange} serverUrl={serverUrl}
+        <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
           isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} />
         <Route path="/colorrecognition" element={<ColorRecognition imageUrl={imageUrl} module={module} imageColors={imageColors}

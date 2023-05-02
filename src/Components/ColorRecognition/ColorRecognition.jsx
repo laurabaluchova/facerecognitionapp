@@ -16,9 +16,7 @@ const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, 
     <div className='center ma '>
     <div className='absolute mt4'>
     
-    {imageUrl != "" 
-    ? <ColorSwatch imageColors={imageColors}/> 
-    : console.log("kekeke")}
+    {imageUrl != "" && <ColorSwatch imageColors={imageColors}/>}
     
     <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>         
     </div>       

@@ -4,7 +4,7 @@ import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, onRouteChange, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor, changeCursor}) {
+function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor, changeCursor}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -33,8 +33,7 @@ const onSubmitSignIn = (event) => {
       .then(response => response.json())
       .then(user => {
         if (user.id) {
-          loadUser(user);
-          onRouteChange('home');
+          loadUser(user);         
           setIsLoading(false)
           changeCursor()
           localStorage.setItem("isLoggedIn", user.name)
@@ -81,7 +80,7 @@ const onSubmitSignIn = (event) => {
       style={{ cursor: cursor }}/>
     </div>
     <div className="lh-copy mt3">
-      <Link to="/register" onClick={() => onRouteChange('register')} disabled={isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>      
+      <Link to="/register" disabled={isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>      
     </div>
     <div>
     <GoogleLogin 

@@ -44,15 +44,15 @@ export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, 
                 <NavLink 
                     to="/" 
                     onClick={performChangesOnSignOut} 
-                    className='f3 link dim pa2 pointer yellow mr4'                    
+                    className='f3 link pa2 pointer yellow mr4'                    
                 >Sign Out</NavLink>
             </nav>
         );
     } else {
         return (
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>                      
-            <NavLink to="/" className='f3 dim pa2 pointer white'>Sign In</NavLink>
-            <NavLink to="/register" className='f3 dim pa2 pointer white'>Register </NavLink>                         
+            <NavLink to="/" className='f3 pa2 pointer white '>Sign In</NavLink>
+            <NavLink to="/register" className='f3 pa2 pointer white'>Register </NavLink>                         
              </nav>        
         );    
     }} 

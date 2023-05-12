@@ -16,9 +16,12 @@ function App() {
     joined: ''
   });
   const [input, setInput] = useState(() => {
-    const saved = localStorage.getItem("input");
-    const initialValue = JSON.parse(saved);
+    const saved = localStorage.getItem("input"); 
+    if (saved != "") {
+      const initialValue = JSON.parse(saved);
     return initialValue || "";
+    }   
+    return "";    
   });
   
   const [box, setBox] = useState([]);  

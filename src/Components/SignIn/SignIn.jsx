@@ -30,7 +30,13 @@ const onSubmitSignIn = (event) => {
         password: signInPassword
       })
     })
-      .then(response => response.json())
+      .then(response => 
+        {if (response.status === 400) {
+          setIsLoading(false);
+          console.log("nejde login")
+          changeCursor();
+        }
+          return response.json()})
       .then(user => {
         if (user.id) {
           loadUser(user);         
@@ -42,8 +48,7 @@ const onSubmitSignIn = (event) => {
       }
     })  
     .catch(() => {    
-      setIsLoading(false);
-      changeCursor();
+      
   });
   } else {
     console.log("please provide your credentials")

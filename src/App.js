@@ -10,9 +10,9 @@ import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 function App() {
   const [user, setUser] = useState({
     id: '',
-    name: '',
+    name: window.localStorage.getItem('name') ||'',
     email: '',
-    entries: 0,
+    entries: window.localStorage.getItem('entries') || 0,
     joined: ''
   });
   const [input, setInput] = useState(() => {
@@ -63,7 +63,7 @@ function App() {
     localStorage.setItem("input", JSON.stringify(input));
   }, [input]);
 
-  
+   
   const validateUrl = URL => {
     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
     return regex.test(URL);
@@ -77,8 +77,11 @@ function App() {
       entries: data.entries,
       joined: data.joined
     })
+    window.localStorage.setItem('name', data.name);
+    window.localStorage.setItem('entries', data.entries);
   }
 
+  
   const changeModule = (newModule) => {
     if (newModule !== "face-detection") {
       setModule({
@@ -180,6 +183,7 @@ function App() {
                   joined: user.joined
 
                 });
+                window.localStorage.setItem('entries', count)
                 setIsLoading(false)
                 changeCursor()
               })

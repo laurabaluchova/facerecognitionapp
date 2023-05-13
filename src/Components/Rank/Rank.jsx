@@ -10,13 +10,15 @@ const  Rank = ({ name, entries, isGoogleUser, module }) => {
     </div>    
   ) 
   } else {
+    let savedName = window.localStorage.getItem('name');
+    let savedEntries = window.localStorage.getItem('entries');
     return (
       <div>
           <div className='white f2 pa1 ma4'>
-            {`${name}, your current detected images count is...`}
+            {`${savedName}, your current detected images count is...`}
           </div>
           <div className='f1'>
-              {entries}
+              {savedEntries}
           </div>
       </div>    
     ) 

@@ -40,14 +40,14 @@ function App() {
   const serverUrl = "https://ai-brain-server.onrender.com"
   const location = useLocation()
 
-  const changeCursor = () => {
-    setCursor(prevState => {
-      if (prevState === 'default') {
-        return 'wait';
-      }
-      return 'default';
-    });
-  }
+  // const changeCursor = () => {
+  //   setCursor(prevState => {
+  //     if (prevState === 'default') {
+  //       return 'wait';
+  //     }
+  //     return 'default';
+  //   });
+  // }
 
   useEffect(() => {
     if (location.pathname === "/facerecognition" || location.pathname === "/register")
@@ -154,7 +154,7 @@ function App() {
 
     if (input !== "" && validateUrl(input)) {
       setIsLoading(true);
-      changeCursor();
+      setCursor("wait");
 
       let response = await fetch(`${serverUrl}/imageurl`, {
         method: 'post',
@@ -186,9 +186,9 @@ function App() {
 
           });
 
-          window.localStorage.setItem('entries', count)
+          window.localStorage.setItem('entries', count);          
           setIsLoading(false)
-          changeCursor();
+          setCursor("default");
         }
 
         if (module.id === "face-detection") {
@@ -210,19 +210,19 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
             setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-            setCursor={setCursor} changeCursor={changeCursor} />} />
+            setCursor={setCursor} />} />
           {/* <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} /> */}
           <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
             isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-            setCursor={setCursor} changeCursor={changeCursor} />} />
+            setCursor={setCursor} setIsGoogleUser={setIsGoogleUser} />} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} validateUrl={validateUrl} />} />
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} />} />
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}  />} />
         </Routes>
 
       </div>

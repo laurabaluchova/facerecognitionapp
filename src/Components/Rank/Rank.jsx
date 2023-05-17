@@ -1,7 +1,8 @@
 import React from 'react';
 
 const  Rank = ({ name, entries, isGoogleUser, module }) => {
-  if (isGoogleUser) {
+  let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser');
+  if (isGoogleUserLocalStorage) {
   return (
     <div>
         <div className='white f2 pa1 ma4'>

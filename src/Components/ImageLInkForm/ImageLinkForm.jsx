@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import './ImageLinkForm.css';
 
 const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser, 
-  isLoading, setIsLoading, cursor, setCursor, changeCursor}) => {    
+  isLoading, setIsLoading, cursor, setCursor, }) => {    
   return (
     <div style={{ cursor: cursor }}>
       {isGoogleUser

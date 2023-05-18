@@ -1,8 +1,12 @@
-import React from 'react';
+import {useEffect} from 'react';
 
-const  Rank = ({ name, entries, isGoogleUser, module }) => {
-  let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser');
+const  Rank = ({ name, entries, isGoogleUser, module }) => {  
+
+  console.log("rank function running")
+  let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true";
+
   if (isGoogleUserLocalStorage) {
+    console.log("rank true", typeof isGoogleUserLocalStorage)
   return (
     <div>
         <div className='white f2 pa1 ma4'>
@@ -11,6 +15,7 @@ const  Rank = ({ name, entries, isGoogleUser, module }) => {
     </div>    
   ) 
   } else {
+    console.log("rank false", isGoogleUserLocalStorage)
     let savedName = window.localStorage.getItem('name');
     let savedEntries = window.localStorage.getItem('entries');
     return (

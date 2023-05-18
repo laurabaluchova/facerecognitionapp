@@ -63,7 +63,7 @@ function App() {
     localStorage.setItem("input", JSON.stringify(input));
   }, [input]);
 
-
+  
   const validateUrl = URL => {
     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
     return regex.test(URL);
@@ -140,14 +140,13 @@ function App() {
     return sortedColorsArray
   };
 
-  const displayColorSwatch = (colorSwatch) => {
-    console.log(colorSwatch[0].raw_hex)
-    setImageColors(colorSwatch[0].raw_hex)
-    return imageColors
+  const displayColorSwatch = (colorSwatch) => {    
+    setImageColors(colorSwatch[0].raw_hex);    
   }
 
   const onInputChange = (event) => {
     setInput(event.target.value);
+    setImageColors("");
   };
 
   async function onSubmit() {

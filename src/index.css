@@ -13,6 +13,10 @@ button {
   cursor: pointer;
 }
 
+img {
+  margin-bottom: 1rem;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

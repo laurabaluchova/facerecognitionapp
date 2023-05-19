@@ -18,7 +18,7 @@ const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, 
     
     {validateUrl(imageUrl) && <ColorSwatch imageColors={imageColors}/>}
     
-    <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>         
+    {validateUrl(imageUrl) && <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>}       
     </div>       
         
         </div>

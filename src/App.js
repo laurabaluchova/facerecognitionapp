@@ -9,7 +9,7 @@ import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 
 function App() {
   const [user, setUser] = useState({
-    id: '',
+    id: window.localStorage.getItem('id') || '',
     name: window.localStorage.getItem('name') || '',
     email: '',
     entries: window.localStorage.getItem('entries') || 0,
@@ -64,8 +64,8 @@ function App() {
   }, [input]);
 
   
-  const validateUrl = URL => {
-    const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+  const validateUrl = URL => {    
+    const regex = new RegExp ('(https?:\/\/.*\.(?:png|jpg|jpeg))');
     return regex.test(URL);
   };
 
@@ -79,6 +79,7 @@ function App() {
     })
     window.localStorage.setItem('name', data.name);
     window.localStorage.setItem('entries', data.entries);
+    window.localStorage.setItem('id', data.id);
   }
 
 
@@ -165,7 +166,7 @@ function App() {
       })
 
       let fetchedData = await response.json();
-      if (fetchedData) {
+      if (fetchedData) {         
         let imageResponse = await fetch(`${serverUrl}/image`, {
           method: 'put',
           headers: { 'Content-Type': 'application/json' },
@@ -221,7 +222,7 @@ function App() {
             isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}  />} />
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}  validateUrl={validateUrl}/>} />
         </Routes>
 
       </div>

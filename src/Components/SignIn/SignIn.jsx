@@ -42,10 +42,8 @@ const onSubmitSignIn = (event) => {
       .then(user => {
         if (user.id) {
           loadUser(user);         
-          setIsLoading(false)
-          setCursor("default")
-          localStorage.setItem("isLoggedIn", user.name)
-          // play with local storage
+          setIsLoading(false);
+          setCursor("default");          
           navigate("/colorrecognition")
       }
     })  

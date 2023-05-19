@@ -1,18 +1,18 @@
+import ParticlesBg from 'particles-bg';
 import React from 'react';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
-import Rank from '../Rank/Rank';
 import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
+import Rank from '../Rank/Rank';
 import './ColorRecognition.css';
-import ParticlesBg from 'particles-bg';
 
 const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, isGoogleUser,
-  isLoading, setIsLoading, cursor, setCursor, validateUrl}) => {    
+  isLoading, cursor,  validateUrl}) => {    
   return (        
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
     <Rank name={user.name} entries={user.entries} module={module} isGoogleUser={isGoogleUser}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} isGoogleUser={isGoogleUser}
-    isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} /> 
+    isLoading={isLoading} cursor={cursor} /> 
     <div className='center ma '>
     <div className='absolute mt4'>
     

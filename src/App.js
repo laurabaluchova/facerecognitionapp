@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from "react-router-dom";
 import './App.css';
-import { Routes, Route, useLocation } from "react-router-dom";
-import Navigation from './Components/Navigation/Navigation';
-import SignIn from './Components/SignIn/SignIn';
-import Register from './Components/Register/Register';
-import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
+import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import Navigation from './Components/Navigation/Navigation';
+import Register from './Components/Register/Register';
+import SignIn from './Components/SignIn/SignIn';
 
 function App() {
   const [user, setUser] = useState({
@@ -17,7 +17,7 @@ function App() {
   });
   const [input, setInput] = useState(() => {
     const saved = localStorage.getItem("input");
-    if (saved != "") {
+    if (saved !== "") {
       const initialValue = JSON.parse(saved);
       return initialValue || "";
     }
@@ -38,16 +38,7 @@ function App() {
   document.body.style.backgroundColor = myBackgroundColor;
 
   const serverUrl = "https://ai-brain-server.onrender.com"
-  const location = useLocation()
-
-  // const changeCursor = () => {
-  //   setCursor(prevState => {
-  //     if (prevState === 'default') {
-  //       return 'wait';
-  //     }
-  //     return 'default';
-  //   });
-  // }
+  const location = useLocation(); 
 
   useEffect(() => {
     if (location.pathname === "/facerecognition" || location.pathname === "/register")
@@ -200,7 +191,7 @@ function App() {
       }}
 
     else {
-      console.log("input empty")
+      console.log("incorrect image url")
   }
 };
 
@@ -210,19 +201,16 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
             setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-            setCursor={setCursor} />} />
-          {/* <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
-          setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-          setCursor={setCursor} changeCursor={changeCursor} />} /> */}
+            setCursor={setCursor} />} />          
           <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
             isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
             setCursor={setCursor} setIsGoogleUser={setIsGoogleUser} />} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} validateUrl={validateUrl} />} />
+            isLoading={isLoading} cursor={cursor} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}  validateUrl={validateUrl}/>} />
+            isLoading={isLoading} cursor={cursor} validateUrl={validateUrl}/>} />
         </Routes>
 
       </div>

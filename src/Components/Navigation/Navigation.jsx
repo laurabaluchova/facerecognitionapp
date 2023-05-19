@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import { NavLink, useLocation } from "react-router-dom"
-import "./navigation.css"
+import React from 'react';
+import { NavLink, useLocation } from "react-router-dom";
+import "./navigation.css";
 
 export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, setIsLoading}) { 
     const location = useLocation();
@@ -20,8 +20,7 @@ export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, 
         localStorage.setItem("input", "");
     }
     
-    if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {
-        console.log(location.pathname)
+    if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {       
         return (
             <nav style={{display: 'flex', justifyContent: 'flex-end', backgroundColor: '#5E2CA5', alignItems: "flex-end"}}>
                 <ul style={{marginRight: 'auto'}}>                    

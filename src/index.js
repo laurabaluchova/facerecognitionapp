@@ -1,11 +1,10 @@
-import {StrictMode } from "react"; 
-import ReactDOM from 'react-dom/client';
-import App from "./App" 
-import {BrowserRouter} from "react-router-dom"
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import 'tachyons';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { StrictMode } from "react";
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from "react-router-dom";
+import 'tachyons';
+import App from "./App";
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

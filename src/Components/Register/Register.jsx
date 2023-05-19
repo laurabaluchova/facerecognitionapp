@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import ParticlesBg from 'particles-bg';
 import { useFormik } from 'formik';
+import ParticlesBg from 'particles-bg';
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const validate = (values) => {
   let errors = {};
@@ -41,7 +41,13 @@ function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCurs
           name: name,
         })
       })
-        .then(response => response.json())
+      .then(response => 
+        {if (response.status === 400) {
+          setIsLoading(false);
+          console.log("registration does not work")
+          setCursor("default");
+        }
+          return response.json()})
         .then(user => {
           if (user.id) {
             loadUser(user)

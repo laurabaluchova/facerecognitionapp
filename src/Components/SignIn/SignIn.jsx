@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
+import ParticlesBg from 'particles-bg';
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor}) {
   
@@ -35,7 +35,7 @@ const onSubmitSignIn = (event) => {
       .then(response => 
         {if (response.status === 400) {
           setIsLoading(false);
-          console.log("nejde login")
+          console.log("sign in does not work")
           setCursor("default");
         }
           return response.json()})

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import './ImageLinkForm.css';
 
 const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser, 
@@ -23,8 +23,7 @@ const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser,
             <div className='form center pa4 br3 shadow-5'>
                 <input className='f4 pa2 w-70 center' type='text' placeholder="Insert image URL here" value={input} onChange={onInputChange}  />
                 <button className='button w-30 grow f4 link ph3 pv2 dib white bg-purple pointer'
-                onClick={onSubmit} 
-                // style={{ cursor: cursor }}               
+                onClick={onSubmit}                              
                 >{isLoading ? "Loading..." : "Detect" }
                 </button>                
              </div>

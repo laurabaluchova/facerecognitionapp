@@ -1,8 +1,6 @@
 import {useEffect} from 'react';
 
-const  Rank = ({ name, entries, isGoogleUser, module }) => {  
-
-  console.log("rank function running")
+const  Rank = ({ name, entries, isGoogleUser, module }) => {   
   let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true";
 
   if (isGoogleUserLocalStorage) {

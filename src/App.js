@@ -9,22 +9,22 @@ import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 
 function App() {
   const [user, setUser] = useState({
-    id: '',
-    name: window.localStorage.getItem('name') ||'',
+    id: window.localStorage.getItem('id') || '',
+    name: window.localStorage.getItem('name') || '',
     email: '',
     entries: window.localStorage.getItem('entries') || 0,
     joined: ''
   });
   const [input, setInput] = useState(() => {
-    const saved = localStorage.getItem("input"); 
+    const saved = localStorage.getItem("input");
     if (saved != "") {
       const initialValue = JSON.parse(saved);
-    return initialValue || "";
-    }   
-    return "";    
+      return initialValue || "";
+    }
+    return "";
   });
-  
-  const [box, setBox] = useState([]);  
+
+  const [box, setBox] = useState([]);
   const [module, setModule] = useState({
     id: 'color-recognition',
     name: 'colors'
@@ -40,14 +40,14 @@ function App() {
   const serverUrl = "https://ai-brain-server.onrender.com"
   const location = useLocation()
 
-  const changeCursor = () => {
-    setCursor(prevState => {
-      if (prevState === 'default') {
-        return 'wait';
-      }
-      return 'default';
-    });
-  }
+  // const changeCursor = () => {
+  //   setCursor(prevState => {
+  //     if (prevState === 'default') {
+  //       return 'wait';
+  //     }
+  //     return 'default';
+  //   });
+  // }
 
   useEffect(() => {
     if (location.pathname === "/facerecognition" || location.pathname === "/register")
@@ -63,9 +63,9 @@ function App() {
     localStorage.setItem("input", JSON.stringify(input));
   }, [input]);
 
-   
-  const validateUrl = URL => {
-    const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+  
+  const validateUrl = URL => {    
+    const regex = new RegExp ('(https?:\/\/.*\.(?:png|jpg|jpeg))');
     return regex.test(URL);
   };
 
@@ -79,9 +79,10 @@ function App() {
     })
     window.localStorage.setItem('name', data.name);
     window.localStorage.setItem('entries', data.entries);
+    window.localStorage.setItem('id', data.id);
   }
 
-  
+
   const changeModule = (newModule) => {
     if (newModule !== "face-detection") {
       setModule({
@@ -94,7 +95,7 @@ function App() {
         id: "face-detection",
         name: 'faces'
       })
-    }    
+    }
   };
 
   const calculateFaceLocation = (locationsArray) => {
@@ -119,7 +120,7 @@ function App() {
     console.log(cleaned_data)
     cleaned_data.regions.forEach((item) => {
       locationsArray.push(item.region_info.bounding_box)
-    })    
+    })
     return locationsArray
   };
 
@@ -140,22 +141,22 @@ function App() {
     return sortedColorsArray
   };
 
-  const displayColorSwatch = (colorSwatch) => {
-    console.log(colorSwatch[0].raw_hex)
-    setImageColors(colorSwatch[0].raw_hex)
-    return imageColors
+  const displayColorSwatch = (colorSwatch) => {    
+    setImageColors(colorSwatch[0].raw_hex);    
   }
 
   const onInputChange = (event) => {
-    setInput(event.target.value);    
+    setInput(event.target.value);
+    setImageColors("");
   };
 
-  const onSubmit = () => {
-    
+  async function onSubmit() {
+
     if (input !== "" && validateUrl(input)) {
       setIsLoading(true);
-      changeCursor();
-      fetch(`${serverUrl}/imageurl`, {
+      setCursor("wait");
+
+      let response = await fetch(`${serverUrl}/imageurl`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -163,74 +164,69 @@ function App() {
           module: module
         })
       })
-        .then(response => response.json())
-        .then(response => {
-          if (response) {
-            fetch(`${serverUrl}/image`, {
-              method: 'put',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                id: user.id
-              })
-            })
-              .then(response => response.json())
-              .then(count => {
-                setUser({
-                  id: user.id,
-                  name: user.name,
-                  email: user.email,
-                  entries: count,
-                  joined: user.joined
 
-                });
-                window.localStorage.setItem('entries', count)
-                setIsLoading(false)
-                changeCursor()
-              })
-              .catch(() => {
-                setIsLoading(false);
-                changeCursor();
-                console.log()
-              });
-
-          }
-          if (module.id === "face-detection") {
-            displayFaceBox(calculateFaceLocation(prepareLocationsArray(response)
-            ))
-          } else {
-            displayColorSwatch(prepareColorsArray(response))            
-          }
-
+      let fetchedData = await response.json();
+      if (fetchedData) {         
+        let imageResponse = await fetch(`${serverUrl}/image`, {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: user.id
+          })
         })
-        .catch(err => console.log(err));
-    } else {
-      console.log("input empty")
-    }
-  } 
+        if (imageResponse) {
+          let imageResponseData = await imageResponse.json();
+          let count = await imageResponseData;
+          setUser({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            entries: count,
+            joined: user.joined
 
-  return (
-    <div className="App" style={{ cursor: cursor }}>
-      <Navigation changeModule={changeModule} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
-      <Routes>
-        <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
-          setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-          setCursor={setCursor} changeCursor={changeCursor} />} />
-        {/* <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
+          });
+
+          window.localStorage.setItem('entries', count);          
+          setIsLoading(false)
+          setCursor("default");
+        }
+
+        if (module.id === "face-detection") {
+          displayFaceBox(calculateFaceLocation(prepareLocationsArray(fetchedData)
+          ))
+        } else {
+          displayColorSwatch(prepareColorsArray(fetchedData))
+        }
+      }}
+
+    else {
+      console.log("input empty")
+  }
+};
+
+    return (
+      <div className="App" style={{ cursor: cursor }}>
+        <Navigation changeModule={changeModule} setInput={setInput} setIsGoogleUser={setIsGoogleUser} setIsLoading={setIsLoading} />
+        <Routes>
+          <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
+            setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
+            setCursor={setCursor} />} />
+          {/* <Route path="/signin" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
           setUser={setUser} setIsGoogleUser={setIsGoogleUser} isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
           setCursor={setCursor} changeCursor={changeCursor} />} /> */}
-        <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
-          isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
-          setCursor={setCursor} changeCursor={changeCursor} />} />
-        <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
-          user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-          isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} validateUrl={validateUrl}/>} />
-        <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module} 
-          user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-          isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} changeCursor={changeCursor} />} />
-      </Routes>
+          <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
+            setCursor={setCursor} setIsGoogleUser={setIsGoogleUser} />} />
+          <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor} validateUrl={validateUrl} />} />
+          <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
+            isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor} setCursor={setCursor}  validateUrl={validateUrl}/>} />
+        </Routes>
 
-    </div>
-  );
+      </div>
+    );
 }
 ;
 

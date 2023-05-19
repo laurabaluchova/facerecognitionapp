@@ -4,7 +4,7 @@ import ParticlesBg from 'particles-bg';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
-function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor, changeCursor}) {
+function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor}) {
   
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -21,7 +21,9 @@ function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, set
 const onSubmitSignIn = (event) => {
   if (signInEmail !== "" && signInPassword !== "") {
     setIsLoading(true);
-    changeCursor()    
+    setIsGoogleUser(false);
+    localStorage.setItem("isGoogleUser", false)
+    setCursor("wait")    
     fetch(`${serverUrl}/signin`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -34,16 +36,14 @@ const onSubmitSignIn = (event) => {
         {if (response.status === 400) {
           setIsLoading(false);
           console.log("nejde login")
-          changeCursor();
+          setCursor("default");
         }
           return response.json()})
       .then(user => {
         if (user.id) {
           loadUser(user);         
-          setIsLoading(false)
-          changeCursor()
-          localStorage.setItem("isLoggedIn", user.name)
-          // play with local storage
+          setIsLoading(false);
+          setCursor("default");          
           navigate("/colorrecognition")
       }
     })  
@@ -90,11 +90,11 @@ const onSubmitSignIn = (event) => {
     <div>
     <GoogleLogin 
             onSuccess={credentialResponse => {
-              setIsGoogleUser(true)                            
+              setIsGoogleUser(true);
+              localStorage.setItem("isGoogleUser", true);                            
               let userDataToken = credentialResponse
               console.log(userDataToken)
-              let decodedToken = jwt_decode(userDataToken.credential)
-              console.log(decodedToken)
+              let decodedToken = jwt_decode(userDataToken.credential);              
               navigate("/colorrecognition")
               setUser({
                 id: '',
@@ -102,7 +102,8 @@ const onSubmitSignIn = (event) => {
                 email: '',
                 entries: "",
                 joined: ''
-              })              
+              })
+              window.localStorage.setItem('name', decodedToken.given_name);            
             }}
          
             onError={() => {

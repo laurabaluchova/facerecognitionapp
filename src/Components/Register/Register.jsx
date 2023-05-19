@@ -15,7 +15,7 @@ const validate = (values) => {
   return errors
 }
 
-function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor, changeCursor}) { 
+function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor, setIsGoogleUser}) { 
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');  
 
@@ -29,7 +29,9 @@ function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCurs
     onSubmit: (event) => {  
       if (password !== "" && name !== "") {
         setIsLoading(true);
-        changeCursor()    
+        setIsGoogleUser(false);
+        localStorage.setItem("isGoogleUser", false)
+        setCursor("wait");    
       fetch(`${serverUrl}/register`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -45,14 +47,14 @@ function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCurs
             loadUser(user)
             
             setIsLoading(false)
-            changeCursor()
+            setCursor("default");
             localStorage.setItem("isLoggedIn", "1")
             navigate("/colorrecognition");
         }
       }) 
       .catch(() => {    
         setIsLoading(false);
-        changeCursor();
+        setCursor("default");
     }); 
     } else {
       console.log("provide register credentials")

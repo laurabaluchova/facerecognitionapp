@@ -3,10 +3,11 @@ import { Link } from "react-router-dom"
 import './ImageLinkForm.css';
 
 const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser, 
-  isLoading, setIsLoading, cursor, setCursor, changeCursor}) => {    
+  isLoading, setIsLoading, cursor, setCursor, }) => {   
+    let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true"; 
   return (
     <div style={{ cursor: cursor }}>
-      {isGoogleUser
+      {isGoogleUserLocalStorage
       ?
         <p className='f4'>          
             To count your detected images&nbsp;

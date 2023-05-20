@@ -1,6 +1,6 @@
 import React from "react";
 
-const  Rank = ({ name, entries, isGoogleUser, module }) => {   
+const  Rank = ({ name, module }) => {   
   let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true";
 
   if (isGoogleUserLocalStorage) {    

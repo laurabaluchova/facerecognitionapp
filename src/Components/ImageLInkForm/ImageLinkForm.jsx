@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import './ImageLinkForm.css';
 
-const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isGoogleUser, 
-  isLoading, setIsLoading, cursor, setCursor, }) => {   
+const  ImageLinkForm = ({onInputChange, onSubmit, module, input, isLoading, cursor}) => {   
     let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true"; 
   return (
     <div style={{ cursor: cursor }}>

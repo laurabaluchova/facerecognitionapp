@@ -26,8 +26,8 @@ function App() {
 
   const [box, setBox] = useState([]);
   const [module, setModule] = useState({
-    id: 'color-recognition',
-    name: 'colors'
+    id:  window.localStorage.getItem('module_id') || 'color-recognition',
+    name:  window.localStorage.getItem('module_name') || 'colors'
   });
   const [imageColors, setImageColors] = useState("");
   const [myBackgroundColor, setBackgroundColor] = useState("#ffa500");
@@ -80,12 +80,16 @@ function App() {
         id: "color-recognition",
         name: "colors"
       })
+      window.localStorage.setItem('module_name', "colors");
+      window.localStorage.setItem('module_id', "color-recognition");
       setBox([])
     } else {
       setModule({
         id: "face-detection",
         name: 'faces'
       })
+      window.localStorage.setItem('module_name', "faces");
+      window.localStorage.setItem('module_id', "face-detection");
     }
   };
 
@@ -121,14 +125,11 @@ function App() {
 
   const prepareColorsArray = (data) => {
     let colorsArray = [];
-    let cleaned_data = data.outputs[0].data
-    console.log(cleaned_data)
+    let cleaned_data = data.outputs[0].data    
     cleaned_data.colors.forEach((item) => {
       colorsArray.push(item)
-    })
-    console.log("col array", colorsArray)
-    let sortedColorsArray = colorsArray.sort((a, b) => b.value - a.value)
-    console.log("sorted col array", sortedColorsArray)
+    })    
+    let sortedColorsArray = colorsArray.sort((a, b) => b.value - a.value)    
     return sortedColorsArray
   };
 
@@ -206,11 +207,9 @@ function App() {
             isLoading={isLoading} setIsLoading={setIsLoading} cursor={cursor}
             setCursor={setCursor} setIsGoogleUser={setIsGoogleUser} />} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
-            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} cursor={cursor} validateUrl={validateUrl} />} />
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isLoading={isLoading} cursor={cursor} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
-            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isGoogleUser={isGoogleUser}
-            isLoading={isLoading} cursor={cursor} validateUrl={validateUrl}/>} />
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} isLoading={isLoading} cursor={cursor} validateUrl={validateUrl}/>} />
         </Routes>
 
       </div>

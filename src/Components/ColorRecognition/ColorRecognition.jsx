@@ -9,7 +9,7 @@ const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, 
   return (        
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
-    <Rank name={user.name} entries={user.entries} module={module}/> 
+    <Rank name={user.name} module={module}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} isLoading={isLoading} cursor={cursor} /> 
     <div className='center ma '>
     <div className='absolute mt4'>

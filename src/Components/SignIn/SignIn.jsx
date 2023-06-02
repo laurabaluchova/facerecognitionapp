@@ -7,22 +7,34 @@ import { Link, useNavigate } from "react-router-dom";
 function  SignIn ({loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor}) {
   
   const [signInEmail, setSignInEmail] = useState('');
-  const [signInPassword, setSignInPassword] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');  
+  const [emailIsTouched, setEmailIsTouched] = useState(false);
+ 
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()  
+  const emailIsValid = signInEmail.trim() !== "";
+  const emailInvalid = !emailIsValid && emailIsTouched;
 
   const onEmailChange = (event) => {
-    setSignInEmail(event.target.value)
-  }
+    setSignInEmail(event.target.value); 
+  }; 
+    
+const onEmailBlur = (event) => {
+  setEmailIsTouched(true);  
+}
+
   const onPasswordChange = (event) => {
     setSignInPassword(event.target.value)    
   }
 
 const onSubmitSignIn = (event) => {
-  if (signInEmail !== "" && signInPassword !== "") {
+  event.preventDefault();
+  setEmailIsTouched(true);
+  if (emailIsValid && signInPassword.trim() !== "") {    
     setIsLoading(true);
-    setIsGoogleUser(false);
+    setIsGoogleUser(false);   ;
     localStorage.setItem("isGoogleUser", false)
+    localStorage.setItem("input", "")
     setCursor("wait")    
     fetch(`${serverUrl}/signin`, {
       method: 'post',
@@ -50,8 +62,9 @@ const onSubmitSignIn = (event) => {
     .catch(() => {    
       
   });
-  } else {
-    console.log("please provide your credentials")
+  } else {      
+    console.log("provide your credentials")
+    return;
   }
 }
   return (       
@@ -65,10 +78,12 @@ const onSubmitSignIn = (event) => {
                 <div className="mt3">
                     <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                     <input onChange={onEmailChange}
+                    onBlur ={onEmailBlur}
                     className="pa2 input-reset ba bg-white purple hover-bg-purple hover-white w-100" 
                     type="email" 
                     name="email-address" 
                     id="email-address" />
+                  {emailInvalid && <p className='purple'>Provide valid email</p>}
                 </div>
       <div className="mv3">
         <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>

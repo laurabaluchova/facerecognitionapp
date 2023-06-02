@@ -31,6 +31,7 @@ function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCurs
         setIsLoading(true);
         setIsGoogleUser(false);
         localStorage.setItem("isGoogleUser", false)
+        localStorage.setItem("input", "")
         setCursor("wait");    
       fetch(`${serverUrl}/register`, {
         method: 'post',

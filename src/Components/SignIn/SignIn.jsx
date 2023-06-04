@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
 
-function SignIn({ loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setIsLoading, cursor, setCursor }) {
+function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor, setCursor }) {
   const {
     value: signInEmail,
     isValid: emailIsValid,
@@ -33,8 +33,7 @@ function SignIn({ loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setI
   const onSubmitSignIn = (event) => {
     event.preventDefault();
     if (formIsValid) {
-      setIsLoading(true);
-      setIsGoogleUser(false);;
+      setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
       setCursor("wait")
@@ -109,8 +108,7 @@ function SignIn({ loadUser, serverUrl, setUser, setIsGoogleUser, isLoading, setI
           </div>
           <div>
             <GoogleLogin
-              onSuccess={credentialResponse => {
-                setIsGoogleUser(true);
+              onSuccess={credentialResponse => {                
                 localStorage.setItem("isGoogleUser", true);
                 let userDataToken = credentialResponse
                 console.log(userDataToken)

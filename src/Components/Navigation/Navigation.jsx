@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from "react-router-dom";
 import "./navigation.css";
 
-export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, setIsLoading}) { 
+export default function  Navigation ( {changeModule, setInput, setIsLoading}) { 
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
         changeModule("face-detection");   
@@ -15,8 +15,7 @@ export default function  Navigation ( {changeModule, setInput, setIsGoogleUser, 
     }
 
     const performChangesOnSignOut = () => {        
-        setInput("");
-        setIsGoogleUser(false);
+        setInput("");        
         localStorage.setItem("input", "");
     }
     

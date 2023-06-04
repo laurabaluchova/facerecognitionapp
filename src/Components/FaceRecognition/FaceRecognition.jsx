@@ -4,13 +4,13 @@ import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 import Rank from '../Rank/Rank';
 import './FaceRecognition.css';
 
-const  FaceRecognition = ({imageUrl, box, module, user, onInputChange, onSubmit, input, isLoading, cursor, validateUrl}) => {    
+const  FaceRecognition = ({imageUrl, box, module, user, onInputChange, onSubmit, input, cursor, validateUrl}) => {    
   return (
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
     <Rank name={user.name} module={module}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input}  
-    isLoading={isLoading} cursor={cursor} /> 
+     cursor={cursor} /> 
     <div className='center ma '>
     <div className='absolute mt4'>    
     

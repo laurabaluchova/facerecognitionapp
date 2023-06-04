@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
 
-function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor, setIsGoogleUser }) {
+function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor }) {
   const {
     value: email,
     isValid: emailIsValid,
@@ -40,8 +40,7 @@ function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCur
   const onSubmitRegister = (event) => {
     event.preventDefault();
     if (formIsValid) {
-      setIsLoading(true);
-      setIsGoogleUser(false);
+      setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
       setCursor("wait");

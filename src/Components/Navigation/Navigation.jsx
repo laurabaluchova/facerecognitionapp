@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useLocation } from "react-router-dom";
 import "./navigation.css";
+import LoadingContext from '../../store/loading-context';
 
-export default function  Navigation ( {changeModule, setInput, setIsLoading}) { 
+export default function  Navigation ( {changeModule, setInput}) { 
+    const ctx = useContext(LoadingContext);
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
         changeModule("face-detection");   
-        setIsLoading(false);     
+        ctx.setIsLoading(false);     
     }
 
     const performChangesForColorRecognition = () => {        
         changeModule("color-recognition");
-        setIsLoading(false);
+        ctx.setIsLoading(false);
     }
 
     const performChangesOnSignOut = () => {        

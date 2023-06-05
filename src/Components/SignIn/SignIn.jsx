@@ -1,11 +1,14 @@
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 import ParticlesBg from 'particles-bg';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
+import LoadingContext from '../../store/loading-context';
 
-function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor, setCursor }) {
+function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
+  const ctx = useContext(LoadingContext);
+
   const {
     value: signInEmail,
     isValid: emailIsValid,
@@ -33,7 +36,7 @@ function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor,
   const onSubmitSignIn = (event) => {
     event.preventDefault();
     if (formIsValid) {
-      setIsLoading(true);      
+      ctx.setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
       setCursor("wait")
@@ -47,7 +50,7 @@ function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor,
       })
         .then(response => {
           if (response.status === 400) {
-            setIsLoading(false);
+            ctx.setIsLoading(false);
             console.log("sign in does not work")
             setCursor("default");
           }
@@ -56,7 +59,7 @@ function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor,
         .then(user => {
           if (user.id) {
             loadUser(user);
-            setIsLoading(false);
+            ctx.setIsLoading(false);
             setCursor("default");
             navigate("/colorrecognition")
           }
@@ -100,11 +103,11 @@ function SignIn({ loadUser, serverUrl, setUser, isLoading, setIsLoading, cursor,
           </fieldset>
           <div className="">
             <input onClick={onSubmitSignIn}
-              className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value={isLoading ? "Loading..." : "Sign in"}
+              className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value={ctx.isLoading ? "Loading..." : "Sign in"}
               style={{ cursor: cursor }} />
           </div>
           <div className="lh-copy mt3">
-            <Link to="/register" disabled={isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>
+            <Link to="/register" disabled={ctx.isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>
           </div>
           <div>
             <GoogleLogin

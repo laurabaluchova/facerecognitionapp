@@ -1,9 +1,12 @@
 import ParticlesBg from 'particles-bg';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
+import LoadingContext from '../../store/loading-context';
 
-function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor }) {
+function Register({ loadUser, serverUrl, cursor, setCursor }) {
+  const ctx = useContext(LoadingContext);
+
   const {
     value: email,
     isValid: emailIsValid,
@@ -40,7 +43,7 @@ function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCur
   const onSubmitRegister = (event) => {
     event.preventDefault();
     if (formIsValid) {
-      setIsLoading(true);      
+      ctx.setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
       setCursor("wait");
@@ -55,7 +58,7 @@ function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCur
       })
         .then(response => {
           if (response.status === 400) {
-            setIsLoading(false);
+            ctx.setIsLoading(false);
             console.log("registration does not work")
             setCursor("default");
           }
@@ -65,14 +68,14 @@ function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCur
           if (user.id) {
             loadUser(user)
 
-            setIsLoading(false)
+            ctx.setIsLoading(false)
             setCursor("default");
             localStorage.setItem("isLoggedIn", "1")
             navigate("/colorrecognition");
           }
         })
         .catch(() => {
-          setIsLoading(false);
+          ctx.setIsLoading(false);
           setCursor("default");
         });
     } else {
@@ -126,7 +129,7 @@ function Register({ loadUser, serverUrl, isLoading, setIsLoading, cursor, setCur
           <div className="">
             <input
               onClick={onSubmitRegister}
-              className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value={isLoading ? "Loading..." : "Register"}
+              className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value={ctx.isLoading ? "Loading..." : "Register"}
               style={{ cursor: cursor }} />
           </div>
         </div>

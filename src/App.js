@@ -71,6 +71,8 @@ function App() {
     window.localStorage.setItem('name', data.name);
     window.localStorage.setItem('entries', data.entries);
     window.localStorage.setItem('id', data.id);
+    window.localStorage.setItem('module_id', "color-recognition");
+    window.localStorage.setItem('module_name', "colors");
   }
 
 
@@ -200,15 +202,16 @@ function App() {
   return (
     <div className="App" style={{ cursor: cursor }}>
       <LoadingContext.Provider value={{
-        isLoading: isLoading
+        isLoading: isLoading,
+        setIsLoading: setIsLoading
       }}>
-        <Navigation changeModule={changeModule} setInput={setInput} setIsLoading={setIsLoading} />
+        <Navigation changeModule={changeModule} setInput={setInput} />
         <Routes>
           <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
-            setUser={setUser} setIsLoading={setIsLoading} cursor={cursor}
+            setUser={setUser} cursor={cursor}
             setCursor={setCursor} />} />
           <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
-            setIsLoading={setIsLoading} cursor={cursor}
+            cursor={cursor}
             setCursor={setCursor} />} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} cursor={cursor} validateUrl={validateUrl} />} />

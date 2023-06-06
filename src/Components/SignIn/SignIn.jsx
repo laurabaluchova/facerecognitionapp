@@ -37,8 +37,7 @@ function SignIn({ loadUser, serverUrl, setUser }) {
     event.preventDefault();
     if (formIsValid) {
       ctx.setIsLoading(true);      
-      localStorage.setItem("isGoogleUser", false)
-      localStorage.setItem("input", "")
+      localStorage.setItem("isGoogleUser", false)      
       ctx.setCursor("wait")
       fetch(`${serverUrl}/signin`, {
         method: 'post',

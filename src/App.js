@@ -17,6 +17,7 @@ function App() {
     joined: ''
   });
   const [input, setInput] = useState(() => {
+    console.log("input got from loc storgae")
     const saved = localStorage.getItem("input");
     if (saved !== "") {
       const initialValue = JSON.parse(saved);

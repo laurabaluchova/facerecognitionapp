@@ -17,7 +17,7 @@ export default function  Navigation ( {changeModule, setInput}) {
     }
 
     const performChangesOnSignOut = () => {        
-        setInput("");        
+        localStorage.setItem("input", "")       
         localStorage.setItem("input", "");
     }
     
@@ -29,11 +29,7 @@ export default function  Navigation ( {changeModule, setInput}) {
                         to="/colorrecognition" 
                         onClick={performChangesForColorRecognition} 
                         className='colorrecognition f3 link pa2 pointer pa2 b purple bg-gold'
-                        // style={({ isActive }) => ({
-                        //     color: isActive ? '#7c25cd' : '#ffa500',
-                        //     background: isActive ? "#ffa500" : "#7c25cd", 
-                        //     marginRight: 0                       
-                        //   })}                        
+                                             
                     >Color Recognition</NavLink></li>
                     <li><NavLink 
                         to="/facerecognition" 

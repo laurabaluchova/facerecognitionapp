@@ -203,20 +203,19 @@ function App() {
     <div className="App" style={{ cursor: cursor }}>
       <LoadingContext.Provider value={{
         isLoading: isLoading,
-        setIsLoading: setIsLoading
+        setIsLoading: setIsLoading,
+        cursor: cursor,
+        setCursor: setCursor
       }}>
         <Navigation changeModule={changeModule} setInput={setInput} />
         <Routes>
           <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
-            setUser={setUser} cursor={cursor}
-            setCursor={setCursor} />} />
-          <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl}
-            cursor={cursor}
-            setCursor={setCursor} />} />
+            setUser={setUser} />} />
+          <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl} />} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
-            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} cursor={cursor} validateUrl={validateUrl} />} />
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}
-            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} cursor={cursor} validateUrl={validateUrl} />} />
+            user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} validateUrl={validateUrl} />} />
         </Routes>
       </LoadingContext.Provider>
     </div>

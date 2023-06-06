@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
 import LoadingContext from '../../store/loading-context';
 
-function Register({ loadUser, serverUrl, cursor, setCursor }) {
+function Register({ loadUser, serverUrl }) {
   const ctx = useContext(LoadingContext);
 
   const {
@@ -46,7 +46,7 @@ function Register({ loadUser, serverUrl, cursor, setCursor }) {
       ctx.setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
-      setCursor("wait");
+      ctx.setCursor("wait");
       fetch(`${serverUrl}/register`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +60,7 @@ function Register({ loadUser, serverUrl, cursor, setCursor }) {
           if (response.status === 400) {
             ctx.setIsLoading(false);
             console.log("registration does not work")
-            setCursor("default");
+            ctx.setCursor("default");
           }
           return response.json()
         })
@@ -69,14 +69,14 @@ function Register({ loadUser, serverUrl, cursor, setCursor }) {
             loadUser(user)
 
             ctx.setIsLoading(false)
-            setCursor("default");
+            ctx.setCursor("default");
             localStorage.setItem("isLoggedIn", "1")
             navigate("/colorrecognition");
           }
         })
         .catch(() => {
           ctx.setIsLoading(false);
-          setCursor("default");
+          ctx.setCursor("default");
         });
     } else {
       console.log("provide register credentials")
@@ -86,7 +86,7 @@ function Register({ loadUser, serverUrl, cursor, setCursor }) {
 
   return (
     <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
-      style={{ cursor: cursor }}>
+      style={{ cursor: ctx.cursor }}>
       <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
       <main className="pa4 white">
         <div className="measure ">
@@ -130,7 +130,7 @@ function Register({ loadUser, serverUrl, cursor, setCursor }) {
             <input
               onClick={onSubmitRegister}
               className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value={ctx.isLoading ? "Loading..." : "Register"}
-              style={{ cursor: cursor }} />
+              style={{ cursor: ctx.cursor }} />
           </div>
         </div>
       </main>

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useInput from '../../hooks/use-input';
 import LoadingContext from '../../store/loading-context';
 
-function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
+function SignIn({ loadUser, serverUrl, setUser }) {
   const ctx = useContext(LoadingContext);
 
   const {
@@ -39,7 +39,7 @@ function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
       ctx.setIsLoading(true);      
       localStorage.setItem("isGoogleUser", false)
       localStorage.setItem("input", "")
-      setCursor("wait")
+      ctx.setCursor("wait")
       fetch(`${serverUrl}/signin`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -52,7 +52,7 @@ function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
           if (response.status === 400) {
             ctx.setIsLoading(false);
             console.log("sign in does not work")
-            setCursor("default");
+            ctx.setCursor("default");
           }
           return response.json()
         })
@@ -60,7 +60,7 @@ function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
           if (user.id) {
             loadUser(user);
             ctx.setIsLoading(false);
-            setCursor("default");
+            ctx.setCursor("default");
             navigate("/colorrecognition")
           }
         })
@@ -74,7 +74,7 @@ function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
   }
   return (
     <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
-      style={{ cursor: cursor }}>
+      style={{ cursor: ctx.cursor }}>
       <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />
       <main className="pa4 white">
         <div className="measure ">
@@ -104,7 +104,7 @@ function SignIn({ loadUser, serverUrl, setUser, cursor, setCursor }) {
           <div className="">
             <input onClick={onSubmitSignIn}
               className="b ph3 pv2 input-reset ba b--white bw2 bg-transparent grow pointer f6 dib white hover-bg-purple" type="submit" value={ctx.isLoading ? "Loading..." : "Sign in"}
-              style={{ cursor: cursor }} />
+              style={{ cursor: ctx.cursor }} />
           </div>
           <div className="lh-copy mt3">
             <Link to="/register" disabled={ctx.isLoading} className="f6 link hover-purple white db pointer mb3">Register</Link>

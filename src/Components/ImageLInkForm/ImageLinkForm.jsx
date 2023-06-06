@@ -4,13 +4,13 @@ import './ImageLinkForm.css';
 import useInput from '../../hooks/use-input';
 import LoadingContext from '../../store/loading-context';
 
-const ImageLinkForm = ({ onInputChange, onSubmit, module, input, cursor }) => {
+const ImageLinkForm = ({ onInputChange, onSubmit, module, input }) => {
   let isGoogleUserLocalStorage = window.localStorage.getItem('isGoogleUser') === "true";
-  let localStorage
+  
   const ctx = useContext(LoadingContext);
 
   return (
-    <div style={{ cursor: cursor }}>
+    <div style={{ cursor: ctx.cursor }}>
       {isGoogleUserLocalStorage
         ?
         <p className='f4'>

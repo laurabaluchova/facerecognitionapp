@@ -5,12 +5,12 @@ import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 import Rank from '../Rank/Rank';
 import './ColorRecognition.css';
 
-const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, cursor,  validateUrl}) => {    
+const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, validateUrl}) => {    
   return (        
     <div>
     <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
     <Rank name={user.name} module={module}/> 
-    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} cursor={cursor} /> 
+    <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} /> 
     <div className='center ma '>
     <div className='absolute mt4'>
     

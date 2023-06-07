@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./navigation.css";
 import LoadingContext from '../../store/loading-context';
 
-export default function  Navigation ( {changeModule, setInput}) { 
+export default function  Navigation ( {changeModule, setUser, setInput, setModule}) { 
     const ctx = useContext(LoadingContext);
     const location = useLocation();
     const performChangesForFaceDetection = () => {        
@@ -17,8 +17,20 @@ export default function  Navigation ( {changeModule, setInput}) {
     }
 
     const performChangesOnSignOut = () => {        
-        localStorage.setItem("input", "")       
         localStorage.setItem("input", "");
+        localStorage.setItem("id", "");
+        setInput("")     
+        setUser({
+            id: '',
+            name: '',
+            email: '',
+            entries: 0,
+            joined: ''
+        });  
+        setModule({
+            id: 'color-recognition',
+            name: 'colors'
+          });             
     }
     
     if (location.pathname === "/colorrecognition" || location.pathname === "/facerecognition") {       

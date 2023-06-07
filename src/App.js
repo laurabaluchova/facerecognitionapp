@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import './App.css';
 import ColorRecognition from './Components/ColorRecognition/ColorRecognition';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
@@ -208,11 +208,11 @@ function App() {
         cursor: cursor,
         setCursor: setCursor
       }}>
-        <Navigation changeModule={changeModule} setInput={setInput} />
+        <Navigation changeModule={changeModule} setInput={setInput} setUser={setUser} setModule={setModule}/>
         <Routes>
-          <Route path="/" element={<SignIn loadUser={loadUser} serverUrl={serverUrl}
-            setUser={setUser} />} />
-          <Route path="/register" element={<Register loadUser={loadUser} serverUrl={serverUrl} />} />
+          <Route exact path="/" element={user.id === "" ? (<SignIn loadUser={loadUser} serverUrl={serverUrl}
+            setUser={setUser} /> ) : ( <Navigate replace to={"colorrecognition"} /> )} />
+          <Route exact path="/register" element={user.id === "" ? (<Register loadUser={loadUser} serverUrl={serverUrl} />) : ( <Navigate replace to={"colorrecognition"} /> )} />
           <Route path="/colorrecognition" element={<ColorRecognition imageUrl={input} module={module} imageColors={imageColors}
             user={user} onInputChange={onInputChange} onSubmit={onSubmit} input={input} validateUrl={validateUrl} />} />
           <Route path="/facerecognition" element={<FaceRecognition box={box} imageUrl={input} module={module}

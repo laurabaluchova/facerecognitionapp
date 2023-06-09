@@ -1,13 +1,14 @@
 import ParticlesBg from 'particles-bg';
-import React from 'react';
+import React, { Fragment } from 'react';
 import ColorSwatch from '../ColorSwatch/ColorSwatch';
 import ImageLinkForm from '../ImageLInkForm/ImageLinkForm';
 import Rank from '../Rank/Rank';
 import './ColorRecognition.css';
 
-const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, validateUrl}) => {    
+const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, onSubmit, input, validateUrl }) => {  
+ 
   return (        
-    <div>
+    <Fragment>
     <ParticlesBg type="cobweb" bg={true} color="#5E2CA5" />      
     <Rank name={user.name} module={module}/> 
     <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} module={module} input={input} /> 
@@ -18,9 +19,9 @@ const  ColorRecognition = ({imageUrl, module, imageColors, user, onInputChange, 
     
     {validateUrl(imageUrl) && <img id='inputimage' alt='' src={imageUrl} width='500px' height='auto'></img>}       
     </div>       
-        
+    {!validateUrl(imageUrl) && <p className='purple'>Enter valid URL with ending jpg, jpeg or png</p>}   
         </div>
-   </div>   
+   </Fragment>   
   )
 }
 

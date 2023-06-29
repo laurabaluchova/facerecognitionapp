@@ -1,130 +1,161 @@
-import { useFormik } from 'formik';
-import ParticlesBg from 'particles-bg';
-import React, { useState } from 'react';
+import ParticlesBg from "particles-bg";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import useInput from "../../hooks/use-input";
+import LoadingContext from "../../store/loading-context";
 
-const validate = (values) => {
-  let errors = {};
+function Register({ loadUser, serverUrl }) {
+  const ctx = useContext(LoadingContext);
 
-  if (!values.email) {
-    errors.email = ''
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    onValueChange: onEmailChange,
+    onValueBlur: onEmailBlur,
+  } = useInput(
+    (value) =>
+      value.trim() !== "" &&
+      value.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+  );
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    onValueChange: onPasswordChange,
+    onValueBlur: onPasswordBlur,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: name,
+    isValid: nameIsValid,
+    hasError: nameHasError,
+    onValueChange: onNameChange,
+    onValueBlur: onNameBlur,
+  } = useInput((value) => value.trim() !== "");
+
+  const navigate = useNavigate();
+
+  let formIsValid = false;
+
+  if (emailIsValid && passwordIsValid && nameIsValid) {
+    formIsValid = true;
   }
 
-  return errors
-}
-
-function Register({loadUser, serverUrl, isLoading, setIsLoading, cursor, setCursor, setIsGoogleUser}) { 
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');  
-
-  const navigate = useNavigate()
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-    },
-    validate,
-    onSubmit: (event) => {  
-      if (password !== "" && name !== "") {
-        setIsLoading(true);
-        setIsGoogleUser(false);
-        localStorage.setItem("isGoogleUser", false)
-        setCursor("wait");    
+  const onSubmitRegister = (event) => {
+    event.preventDefault();
+    if (formIsValid) {
+      ctx.setIsLoading(true);
+      localStorage.setItem("isGoogleUser", false);
+      localStorage.setItem("input", "");
+      ctx.setCursor("wait");
       fetch(`${serverUrl}/register`, {
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
+        method: "post",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: formik.values.email,
+          email: email,
           password: password,
           name: name,
-        })
+        }),
       })
-      .then(response => 
-        {if (response.status === 400) {
-          setIsLoading(false);
-          console.log("registration does not work")
-          setCursor("default");
-        }
-          return response.json()})
-        .then(user => {
+        .then((response) => {
+          if (response.status === 400) {
+            ctx.setIsLoading(false);
+            console.log("registration does not work");
+            ctx.setCursor("default");
+          }
+          return response.json();
+        })
+        .then((user) => {
           if (user.id) {
-            loadUser(user)
-            
-            setIsLoading(false)
-            setCursor("default");
-            localStorage.setItem("isLoggedIn", "1")
+            loadUser(user);
+
+            ctx.setIsLoading(false);
+            ctx.setCursor("default");
+            localStorage.setItem("isLoggedIn", "1");
             navigate("/colorrecognition");
-        }
-      }) 
-      .catch(() => {    
-        setIsLoading(false);
-        setCursor("default");
-    }); 
+          }
+        })
+        .catch(() => {
+          ctx.setIsLoading(false);
+          ctx.setCursor("default");
+        });
     } else {
-      console.log("provide register credentials")
+      console.log("provide register credentials");
     }
-  }     
-  })    
+  };
 
-  const onPasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
-  const onNameChange = (event) => {
-    setName(event.target.value)
-  }
-
-  
-    return (    
-      <article className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
-      style={{ cursor: cursor }}>
+  return (
+    <article
+      className="br5 ba b--white-10 mv4 w-100 w-50-m w-25-l mw6 shadow-3 center"
+      style={{ cursor: ctx.cursor }}
+    >
       <ParticlesBg type="cobweb" bg={true} color="#FFB700" />
       <main className="pa4 white">
-          <div className="measure ">
-              <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                  <legend className="f1 fw6 ph0 mh0">Register</legend>
-                  <div className="mt3">
-                      <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-                      <input 
-                      onChange={onNameChange}
-                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
-                      type="text" 
-                      name="name"  
-                      id="name" />
-                  </div>
-                  <div className="mt3">
-                      <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                      <input 
-                      onChange={formik.handleChange} value={formik.values.email}                     
-                      className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
-                      type="email" 
-                      name="email"  
-                      id="email-address" />  
-                       {formik.touched.email && formik.errors.email && (
-                         <p className='gold f6 mt1 normal'>{formik.errors.email}</p>
-                        )}                    
-                  </div>                  
-        <div className="mv3">
-          <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-          <input 
-          onChange={onPasswordChange}
-          className="b pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100" 
-          type="password" 
-          name="password"  
-          id="password" />
-        </div>      
-      </fieldset>
-      <div className="">
-        <input
-        onClick={formik.handleSubmit}
-        className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold" type="submit" value={isLoading ? "Loading..." : "Register" }
-        style={{ cursor: cursor }} />
-      </div>    
-    </div>
-  </main>
-  </ article>        
-    )
-  }  
+        <div className="measure ">
+          <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
+            <legend className="f1 fw6 ph0 mh0">Register</legend>
+            <div className="mt3">
+              <label className="db fw6 lh-copy f6" htmlFor="name">
+                Name
+              </label>
+              <input
+                onChange={onNameChange}
+                onBlur={onNameBlur}
+                className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100"
+                type="text"
+                name="name"
+                id="name"
+              />
+              {nameHasError && <p className="gold">Field cannot be empty</p>}
+            </div>
+            <div className="mt3">
+              <label className="db fw6 lh-copy f6" htmlFor="email-address">
+                Email
+              </label>
+              <input
+                onChange={onEmailChange}
+                onBlur={onEmailBlur}
+                className="pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100"
+                type="email"
+                name="email"
+                id="email-address"
+              />
+              {emailHasError && <p className="gold">Provide valid email</p>}
+            </div>
+            <div className="mv3">
+              <label className="db fw6 lh-copy f6" htmlFor="password">
+                Password
+              </label>
+              <input
+                onChange={onPasswordChange}
+                onBlur={onPasswordBlur}
+                className="b pa2 purple input-reset ba bg-white hover-bg-gold hover-purple w-100"
+                type="password"
+                name="password"
+                id="password"
+              />
+              {passwordHasError && (
+                <p className="gold">Field cannot be empty</p>
+              )}
+            </div>
+          </fieldset>
+          <div className="">
+            <input
+              onClick={onSubmitRegister}
+              className="b ph3 pv2 input-reset ba b--white bg-transparent grow pointer f6 dib white bw2 hover-bg-gold"
+              type="submit"
+              value={ctx.isLoading ? "Loading..." : "Register"}
+              style={{ cursor: ctx.cursor }}
+            />
+          </div>
+        </div>
+      </main>
+    </article>
+  );
+}
 
 export default Register;

@@ -36,7 +36,7 @@ const ColorRecognition = ({
               src={imageUrl}
               width="500px"
               height="auto"
-            ></img>
+            ></img>            
           )}
         </div>
         {!validateUrl(imageUrl) && (

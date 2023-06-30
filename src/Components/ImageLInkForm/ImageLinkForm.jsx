@@ -1,7 +1,6 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./ImageLinkForm.css";
-import useInput from "../../hooks/use-input";
 import LoadingContext from "../../store/loading-context";
 
 const ImageLinkForm = ({ onInputChange, onSubmit, module, input }) => {
